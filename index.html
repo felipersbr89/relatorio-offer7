@@ -17,21 +17,24 @@
 
 :root {
   /* ---------- Cor ---------- */
-  --bg:              #0A0B0D;
-  --bg-elevated:     #111319;
-  --surface:         #15171D;
-  --surface-hover:   #1B1E25;
-  --border:          #24272E;
-  --border-strong:   #343841;
+  --bg:              #030303;
+  --bg-elevated:     #0B0B0D;
+  --surface:         #101012;
+  --surface-hover:   #17171A;
+  --border:          #202023;
+  --border-strong:   #2E2E33;
 
-  --text-primary:    #F3F4F6;
-  --text-secondary:  #9AA0AC;
-  --text-tertiary:   #666B76;
+  --text-primary:    #F7F7F8;
+  --text-secondary:  #9B9BA3;
+  --text-tertiary:   #5C5C64;
 
-  --accent:          #3E7BFA;
-  --accent-light:    #7FA8FF;
-  --accent-dim:      rgba(62, 123, 250, 0.14);
-  --accent-gradient: linear-gradient(135deg, #7FA8FF 0%, #3E7BFA 55%, #1E3A8A 100%);
+  --accent:          #3D7FFF;
+  --accent-light:    #6FA8FF;
+  --accent-cyan:     #4FD8E8;
+  --accent-dim:      rgba(61, 127, 255, 0.14);
+  --accent-glow:     rgba(61, 127, 255, 0.45);
+  --accent-gradient: linear-gradient(120deg, var(--accent-cyan) 0%, var(--accent) 55%, #1E4FE0 100%);
+  --accent-gradient-soft: linear-gradient(135deg, rgba(79,216,232,0.16) 0%, rgba(61,127,255,0.16) 100%);
 
   --success:         #34D399;
   --success-dim:     rgba(52, 211, 153, 0.14);
@@ -46,11 +49,12 @@
   --font-mono:    'JetBrains Mono', 'SFMono-Regular', monospace;
 
   /* ---------- Espaçamento / Layout ---------- */
-  --radius-sm: 8px;
-  --radius-md: 14px;
-  --radius-lg: 20px;
-  --shadow-card: 0 1px 0 rgba(255,255,255,0.02) inset, 0 8px 24px rgba(0,0,0,0.35);
-  --shadow-elevated: 0 20px 60px rgba(0,0,0,0.5);
+  --radius-sm: 9px;
+  --radius-md: 16px;
+  --radius-lg: 22px;
+  --shadow-card: 0 1px 0 rgba(255,255,255,0.03) inset, 0 12px 32px rgba(0,0,0,0.6);
+  --shadow-elevated: 0 24px 70px rgba(0,0,0,0.65);
+  --shadow-glow: 0 0 0 1px rgba(61,127,255,0.25), 0 0 32px rgba(61,127,255,0.16);
   --header-height: 96px;
   --actionbar-height: 84px;
   --max-width: 1180px;
@@ -71,12 +75,14 @@ body {
   margin: 0;
   background: var(--bg);
   background-image:
-    radial-gradient(1200px 600px at 85% -10%, rgba(62,123,250,0.08), transparent 60%),
-    radial-gradient(900px 500px at -5% 10%, rgba(62,123,250,0.05), transparent 55%);
+    radial-gradient(900px 500px at 90% -10%, rgba(61,127,255,0.06), transparent 60%),
+    radial-gradient(700px 420px at -10% 6%, rgba(61,127,255,0.04), transparent 55%);
+  background-attachment: fixed;
   color: var(--text-primary);
   font-family: var(--font-body);
   font-size: 15px;
   line-height: 1.5;
+  font-feature-settings: "tnum" 1, "cv11" 1;
   -webkit-font-smoothing: antialiased;
   min-height: 100vh;
   padding-top: var(--header-height);
@@ -92,6 +98,7 @@ button { font-family: inherit; }
 input {
   font-family: var(--font-mono);
   color: var(--text-primary);
+  font-feature-settings: "tnum" 1;
 }
 
 a { color: var(--accent-light); }
@@ -110,12 +117,13 @@ a { color: var(--accent-light); }
   display: block;
   font-family: var(--font-mono);
   font-size: 11px;
-  letter-spacing: 0.14em;
+  font-weight: 600;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
   color: var(--accent-light);
-  margin-bottom: 8px;
+  margin-bottom: 10px;
   position: relative;
-  padding-left: 16px;
+  padding-left: 18px;
 }
 
 .eyebrow::before {
@@ -123,10 +131,11 @@ a { color: var(--accent-light); }
   position: absolute;
   left: 0;
   top: 50%;
-  width: 10px;
-  height: 2px;
-  background: var(--accent-gradient);
-  transform: translateY(-50%);
+  width: 7px;
+  height: 7px;
+  background: var(--accent);
+  transform: translateY(-50%) rotate(45deg);
+  box-shadow: 0 0 8px var(--accent-glow);
 }
 
 .section-heading {
@@ -135,11 +144,11 @@ a { color: var(--accent-light); }
   padding: 0 32px;
 }
 
-.section-heading-spaced { margin-top: 56px; }
+.section-heading-spaced { margin-top: 64px; }
 
 .section-heading h2 {
-  font-size: 26px;
-  letter-spacing: -0.01em;
+  font-size: 28px;
+  letter-spacing: -0.015em;
 }
 
 /* ---------- Layout principal ---------- */
@@ -167,11 +176,19 @@ a { color: var(--accent-light); }
   position: fixed;
   top: 0; left: 0; right: 0;
   height: var(--header-height);
-  background: rgba(10, 11, 13, 0.82);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
+  background: rgba(4, 6, 12, 0.86);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
   border-bottom: 1px solid var(--border);
   z-index: 40;
+}
+
+.app-header::after {
+  content: "";
+  position: absolute;
+  left: 0; right: 0; bottom: -1px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(61,127,255,0.55), rgba(79,216,232,0.4), transparent);
 }
 
 .header-inner {
@@ -192,6 +209,7 @@ a { color: var(--accent-light); }
   width: auto;
   display: block;
   object-fit: contain;
+  filter: drop-shadow(0 0 14px rgba(61,127,255,0.35));
 }
 
 .header-title {
@@ -200,8 +218,9 @@ a { color: var(--accent-light); }
 }
 
 .header-title h1 {
-  font-size: 21px;
-  letter-spacing: -0.01em;
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: -0.015em;
 }
 
 .header-subtitle {
@@ -274,12 +293,12 @@ a { color: var(--accent-light); }
 /* ============ BOTÕES ============ */
 .btn {
   font-size: 13px;
-  font-weight: 600;
+  font-weight: 700;
   border-radius: var(--radius-sm);
-  padding: 9px 16px;
+  padding: 10px 18px;
   border: 1px solid transparent;
   cursor: pointer;
-  transition: background var(--transition-fast), border-color var(--transition-fast), transform var(--transition-fast), opacity var(--transition-fast);
+  transition: background var(--transition-fast), border-color var(--transition-fast), transform var(--transition-fast), opacity var(--transition-fast), box-shadow var(--transition-fast);
   white-space: nowrap;
 }
 
@@ -287,12 +306,12 @@ a { color: var(--accent-light); }
 
 .btn-primary {
   background: var(--accent-gradient);
-  color: #0A0B0D;
-  box-shadow: 0 8px 24px rgba(62,123,250,0.35);
+  color: #04060C;
+  box-shadow: 0 10px 30px rgba(61,127,255,0.4), 0 0 0 1px rgba(255,255,255,0.06) inset;
 }
-.btn-primary:hover { filter: brightness(1.08); }
+.btn-primary:hover { filter: brightness(1.1); box-shadow: 0 10px 34px rgba(61,127,255,0.55), 0 0 0 1px rgba(255,255,255,0.08) inset; }
 .btn-primary:disabled {
-  opacity: 0.4;
+  opacity: 0.35;
   cursor: not-allowed;
   box-shadow: none;
   filter: none;
@@ -303,10 +322,10 @@ a { color: var(--accent-light); }
   border-color: var(--border-strong);
   color: var(--text-secondary);
 }
-.btn-ghost:hover { background: var(--surface-hover); color: var(--text-primary); }
+.btn-ghost:hover { background: var(--surface-hover); color: var(--text-primary); border-color: var(--accent); }
 
 .btn-danger.btn-ghost { color: var(--danger); border-color: rgba(247,108,108,0.3); }
-.btn-danger.btn-ghost:hover { background: var(--danger-dim); }
+.btn-danger.btn-ghost:hover { background: var(--danger-dim); border-color: var(--danger); }
 
 .btn-danger:not(.btn-ghost) {
   background: var(--danger);
@@ -324,15 +343,33 @@ a { color: var(--accent-light); }
 }
 
 .card {
-  background: var(--surface);
+  position: relative;
+  background: linear-gradient(180deg, rgba(255,255,255,0.02), transparent 40%), var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
   padding: 22px 24px;
   box-shadow: var(--shadow-card);
-  transition: border-color var(--transition-base);
+  transition: border-color var(--transition-base), transform var(--transition-base), box-shadow var(--transition-base);
+  overflow: hidden;
 }
 
-.card:hover { border-color: var(--border-strong); }
+.card::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: var(--accent-gradient);
+  opacity: 0;
+  transition: opacity var(--transition-base);
+}
+
+.card:hover {
+  border-color: var(--border-strong);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-card), 0 0 0 1px rgba(61,127,255,0.12);
+}
+
+.card:hover::before { opacity: 1; }
 
 .card-span-2 { grid-column: span 2; }
 
@@ -349,15 +386,17 @@ a { color: var(--accent-light); }
 }
 
 .card-icon {
-  width: 30px;
-  height: 30px;
-  border-radius: 9px;
-  background: var(--accent-dim);
+  width: 32px;
+  height: 32px;
+  border-radius: 10px;
+  background: var(--accent-gradient-soft);
+  border: 1px solid rgba(61,127,255,0.25);
   color: var(--accent-light);
   display: inline-flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
+  box-shadow: 0 0 16px rgba(61,127,255,0.18);
 }
 .card-icon svg { width: 16px; height: 16px; }
 
@@ -397,7 +436,8 @@ a { color: var(--accent-light); }
 
 .field input[type="text"]:focus {
   border-color: var(--accent);
-  background: #101319;
+  background: #0C111C;
+  box-shadow: 0 0 0 3px rgba(61,127,255,0.14);
 }
 
 .field input.is-invalid {
@@ -418,10 +458,10 @@ a { color: var(--accent-light); }
   border-radius: var(--radius-sm);
   background: var(--bg-elevated);
   overflow: hidden;
-  transition: border-color var(--transition-fast);
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
 }
 
-.money-field:focus-within { border-color: var(--accent); }
+.money-field:focus-within { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(61,127,255,0.14); }
 
 .money-prefix {
   display: flex;
@@ -583,17 +623,37 @@ a { color: var(--accent-light); }
 }
 
 .report-header {
+  position: relative;
   display: flex;
   align-items: center;
   gap: 20px;
-  padding-bottom: 24px;
+  padding: 4px 4px 28px;
   margin-bottom: 28px;
   border-bottom: 1px solid var(--border);
+  overflow: hidden;
 }
 
+.report-header::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    repeating-linear-gradient(
+      52deg,
+      rgba(61,127,255,0.07) 0 2px,
+      transparent 2px 26px
+    ),
+    radial-gradient(480px 200px at 15% 0%, rgba(79,216,232,0.10), transparent 70%);
+  pointer-events: none;
+}
+
+.report-header > * { position: relative; z-index: 1; }
+
 .report-header-info h2 {
-  font-size: 24px;
+  font-size: 25px;
+  font-weight: 700;
   margin-bottom: 4px;
+  letter-spacing: -0.015em;
 }
 
 .report-header-line {
@@ -609,19 +669,31 @@ a { color: var(--accent-light); }
 }
 
 .report-summary {
-  background: var(--surface);
+  position: relative;
+  background: linear-gradient(120deg, rgba(79,216,232,0.07), rgba(61,127,255,0.05) 60%, transparent), var(--surface);
   border: 1px solid var(--border);
-  border-left: 3px solid var(--accent);
   border-radius: var(--radius-md);
-  padding: 20px 24px;
-  margin-bottom: 12px;
+  padding: 24px 28px;
+  margin-bottom: 16px;
+  overflow: hidden;
+}
+
+.report-summary::before {
+  content: "";
+  position: absolute;
+  top: 0; bottom: 0; left: 0;
+  width: 4px;
+  background: var(--accent-gradient);
+  box-shadow: 0 0 20px var(--accent-glow);
 }
 
 .report-summary p {
   font-family: var(--font-display);
-  font-size: 17px;
+  font-size: 19px;
+  font-weight: 500;
   line-height: 1.5;
-  margin-top: 6px;
+  margin-top: 8px;
+  letter-spacing: -0.005em;
 }
 
 /* ---- Cards de indicadores do relatório ---- */
@@ -633,41 +705,65 @@ a { color: var(--accent-light); }
 }
 
 .metric-card {
-  background: var(--surface);
+  position: relative;
+  background: linear-gradient(180deg, rgba(255,255,255,0.02), transparent 40%), var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius-md);
-  padding: 18px 20px;
+  padding: 20px 22px;
   box-shadow: var(--shadow-card);
+  overflow: hidden;
+  transition: transform var(--transition-base), border-color var(--transition-base);
 }
 
+.metric-card::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: var(--accent-gradient);
+  opacity: 0.5;
+}
+
+.metric-card:hover { transform: translateY(-2px); border-color: var(--border-strong); }
+
 .metric-card .metric-label {
-  font-size: 11px;
+  font-family: var(--font-mono);
+  font-size: 10.5px;
   color: var(--text-tertiary);
   text-transform: uppercase;
-  letter-spacing: 0.05em;
-  margin-bottom: 8px;
+  letter-spacing: 0.07em;
+  margin-bottom: 10px;
   display: block;
 }
 
 .metric-card .metric-value {
   font-family: var(--font-display);
-  font-size: 26px;
+  font-size: 30px;
   font-weight: 600;
+  letter-spacing: -0.015em;
   display: block;
 }
 
 .metric-card .metric-sub {
   font-size: 12px;
   color: var(--text-secondary);
-  margin-top: 6px;
+  margin-top: 8px;
   display: block;
+  line-height: 1.5;
 }
 
 .metric-card.metric-highlight {
-  border-color: rgba(62,123,250,0.35);
-  background: var(--accent-dim);
+  border-color: rgba(61,127,255,0.4);
+  background: var(--accent-gradient-soft), var(--surface);
+  box-shadow: var(--shadow-card), 0 0 28px rgba(61,127,255,0.12);
 }
-.metric-card.metric-highlight .metric-value { color: var(--accent-light); }
+.metric-card.metric-highlight::before { opacity: 1; }
+.metric-card.metric-highlight .metric-value {
+  background: var(--accent-gradient);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
 
 /* ---- Comparativos ---- */
 .comparativos-grid {
@@ -685,8 +781,10 @@ a { color: var(--accent-light); }
 }
 
 .comparativo-card h3 {
-  font-size: 16px;
+  font-size: 16.5px;
+  font-weight: 700;
   margin-bottom: 14px;
+  letter-spacing: -0.01em;
 }
 
 .comparativo-values {
@@ -706,8 +804,9 @@ a { color: var(--accent-light); }
 
 .comparativo-values .comparativo-value {
   font-family: var(--font-mono);
-  font-size: 18px;
-  font-weight: 600;
+  font-size: 19px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
 }
 
 .comparativo-chart {
@@ -729,8 +828,8 @@ a { color: var(--accent-light); }
 .gauge-panel {
   display: flex;
   align-items: center;
-  gap: 32px;
-  padding: 28px;
+  gap: 36px;
+  padding: 32px;
   margin-bottom: 8px;
 }
 
@@ -739,23 +838,25 @@ a { color: var(--accent-light); }
   width: 320px;
 }
 
-.gauge-svg { width: 100%; height: auto; display: block; }
+.gauge-svg { width: 100%; height: auto; display: block; filter: drop-shadow(0 0 18px rgba(61,127,255,0.18)); }
 
 .gauge-value-label {
   text-anchor: middle;
   font-family: var(--font-mono);
+  font-weight: 700;
 }
 
 .gauge-legend {
   display: flex;
   justify-content: center;
-  gap: 16px;
-  margin-top: 6px;
+  gap: 18px;
+  margin-top: 10px;
   font-size: 11px;
-  color: var(--text-tertiary);
+  font-weight: 600;
+  color: var(--text-secondary);
 }
 
-.gauge-legend span { display: inline-flex; align-items: center; gap: 5px; }
+.gauge-legend span { display: inline-flex; align-items: center; gap: 6px; }
 
 .gauge-side-stats {
   flex: 1;
@@ -764,6 +865,16 @@ a { color: var(--accent-light); }
   gap: 10px;
   min-width: 0;
 }
+
+.ring-progress-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.ring-progress-text { font-family: var(--font-mono); }
+
+.ring-progress-row .metric-card { flex: 1; }
 
 /* ---- Diagnóstico ---- */
 .diagnostics-list {
@@ -777,24 +888,28 @@ a { color: var(--accent-light); }
 
 .diagnostics-list li {
   position: relative;
-  padding: 12px 16px 12px 34px;
+  padding: 13px 16px 13px 36px;
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius-sm);
   font-size: 13.5px;
   color: var(--text-secondary);
-  line-height: 1.5;
+  line-height: 1.55;
+  transition: border-color var(--transition-base);
 }
+
+.diagnostics-list li:hover { border-color: var(--border-strong); }
 
 .diagnostics-list li::before {
   content: "";
   position: absolute;
-  left: 14px;
-  top: 15px;
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
+  left: 16px;
+  top: 17px;
+  width: 7px;
+  height: 7px;
   background: var(--accent);
+  transform: rotate(45deg);
+  box-shadow: 0 0 8px var(--accent-glow);
 }
 
 /* ---- Ações do relatório ---- */
@@ -1264,7 +1379,11 @@ a { color: var(--accent-light); }
 
     --accent: #2a5bd7;
     --accent-light: #2a5bd7;
+    --accent-cyan: #2a5bd7;
     --accent-dim: #eaf0ff;
+    --accent-glow: transparent;
+    --accent-gradient: linear-gradient(120deg, #2a5bd7, #1e40c4);
+    --accent-gradient-soft: #eaf0ff;
 
     --success: #157a4c;
     --success-dim: #e7f7ef;
@@ -1279,6 +1398,7 @@ a { color: var(--accent-light); }
 
     --shadow-card: none;
     --shadow-elevated: none;
+    --shadow-glow: none;
   }
 
   @page {
@@ -1338,6 +1458,10 @@ a { color: var(--accent-light); }
     break-inside: avoid;
     page-break-inside: avoid;
     box-shadow: none !important;
+  }
+
+  .gauge-svg, .card-icon, .brand-logo {
+    filter: none !important;
   }
 
   /* Evita que um título de seção fique "órfão" no fim da página,
@@ -1685,20 +1809,11 @@ License: MIT
           Progresso do faturamento mensal
         </legend>
         <p class="card-hint">
-          Informe o faturamento acumulado do mês (incluindo hoje). O faturamento bruto de hoje é calculado
-          automaticamente a partir do Clube + Avulso já informados acima.
+          O faturamento bruto de hoje (Clube + Avulso já informados acima) é calculado automaticamente
+          e usado para acompanhar o progresso das metas mensais no velocímetro.
         </p>
 
-        <div class="input-row">
-          <div class="field">
-            <label for="faturamentoAcumuladoMes">Faturamento acumulado do mês (até hoje)</label>
-            <div class="money-field">
-              <span class="money-prefix">R$</span>
-              <input type="text" inputmode="decimal" id="faturamentoAcumuladoMes" name="faturamentoAcumuladoMes" placeholder="0,00" autocomplete="off">
-            </div>
-            <span class="field-error" id="err-faturamentoAcumuladoMes" role="alert"></span>
-          </div>
-
+        <div class="input-row input-row-single">
           <div class="field">
             <span class="readonly-label">Faturamento bruto hoje <em>(automático)</em></span>
             <div class="readonly-chip" id="faturamentoBrutoHojeDisplay">R$ 0,00</div>
@@ -1707,7 +1822,7 @@ License: MIT
 
         <div class="meta-progress" id="metaProgress">
           <p class="meta-progress-empty" id="metaProgressEmpty">
-            Preencha as metas e o faturamento acumulado para ver o progresso de cada escala.
+            Preencha as metas para ver o progresso de cada escala com base no faturamento de hoje.
           </p>
           <div class="meta-progress-row" data-tier="bronze" id="rowBronze" hidden>
             <span class="tier-badge tier-badge-bronze">Bronze</span>
@@ -2141,11 +2256,12 @@ function montarComparativo(atual, anterior) {
 }
 
 /**
- * Calcula o progresso do faturamento acumulado do mês em relação às
- * três escalas de meta (Bronze, Prata, Ouro).
+ * Calcula o progresso de um valor de faturamento (hoje, ou acumulado,
+ * dependendo de quem chama esta função) em relação às três escalas de
+ * meta (Bronze, Prata, Ouro).
  *
  * Para cada escala, retorna:
- *  - atingida: se o acumulado já alcançou aquela meta
+ *  - atingida: se o valor já alcançou aquela meta
  *  - faltaCents: quanto falta (0 se já atingida)
  *  - percentual: % da meta já atingido (pode passar de 100)
  *  - faltaPorDiaCents: quanto precisa faturar por dia, nos dias
@@ -2156,7 +2272,7 @@ function montarComparativo(atual, anterior) {
  * `metasCents` é um objeto { bronze, prata, ouro } em centavos
  * (qualquer uma pode ser null se ainda não informada).
  */
-function calcularProgressoMetas(acumuladoCents, metasCents, diasRestantes) {
+function calcularProgressoMetas(valorCents, metasCents, diasRestantes) {
   const escalas = ["bronze", "prata", "ouro"];
   const resultado = {};
   let escalaMaisAltaAtingida = null;
@@ -2169,9 +2285,9 @@ function calcularProgressoMetas(acumuladoCents, metasCents, diasRestantes) {
       continue;
     }
 
-    const atingida = acumuladoCents >= metaCents;
-    const faltaCents = Math.max(metaCents - acumuladoCents, 0);
-    const percentual = metaCents > 0 ? (acumuladoCents / metaCents) * 100 : null;
+    const atingida = valorCents >= metaCents;
+    const faltaCents = Math.max(metaCents - valorCents, 0);
+    const percentual = metaCents > 0 ? (valorCents / metaCents) * 100 : null;
     const faltaPorDiaCents =
       !atingida && diasRestantes > 0 ? Math.ceil(faltaCents / diasRestantes) : null;
 
@@ -2248,8 +2364,7 @@ const CAMPOS_MANUAIS = [
   { id: "assinantesAtivos", tipo: "inteiro" },
   { id: "metaBronze", tipo: "moeda" },
   { id: "metaPrata", tipo: "moeda" },
-  { id: "metaOuro", tipo: "moeda" },
-  { id: "faturamentoAcumuladoMes", tipo: "moeda" }
+  { id: "metaOuro", tipo: "moeda" }
 ];
 
 function validarCampo(tipo, rawValue) {
@@ -2554,9 +2669,14 @@ function renderComparativoChart(canvasId, comp, formatarValor) {
     instanciasChart[canvasId].destroy();
   }
 
-  const corTendencia =
-    comp.tendencia === "crescimento" ? "#34D399" :
-    comp.tendencia === "queda" ? "#F76C6C" : "#E8B94E";
+  const ctx = canvas.getContext && canvas.getContext("2d");
+  let gradienteHoje = "#3D7FFF";
+  if (ctx) {
+    const g = ctx.createLinearGradient(0, 0, canvas.width || 300, 0);
+    g.addColorStop(0, "#4FD8E8");
+    g.addColorStop(1, "#3D7FFF");
+    gradienteHoje = g;
+  }
 
   instanciasChart[canvasId] = new window.Chart(canvas, {
     type: "bar",
@@ -2564,9 +2684,9 @@ function renderComparativoChart(canvasId, comp, formatarValor) {
       labels: ["Hoje", "Mês anterior"],
       datasets: [{
         data: [comp.atual ?? 0, comp.anterior ?? 0],
-        backgroundColor: ["#3E7BFA", "rgba(255,255,255,0.14)"],
-        borderRadius: 6,
-        maxBarThickness: 46
+        backgroundColor: [gradienteHoje, "rgba(255,255,255,0.10)"],
+        borderRadius: 8,
+        maxBarThickness: 40
       }]
     },
     options: {
@@ -2576,6 +2696,12 @@ function renderComparativoChart(canvasId, comp, formatarValor) {
       plugins: {
         legend: { display: false },
         tooltip: {
+          backgroundColor: "#0A0E18",
+          borderColor: "rgba(61,127,255,0.4)",
+          borderWidth: 1,
+          padding: 10,
+          titleFont: { family: "'Inter', sans-serif", weight: "700" },
+          bodyFont: { family: "'JetBrains Mono', monospace" },
           callbacks: {
             label: (ctx) => formatarValor(ctx.raw)
           }
@@ -2583,24 +2709,22 @@ function renderComparativoChart(canvasId, comp, formatarValor) {
       },
       scales: {
         x: {
-          grid: { color: "rgba(255,255,255,0.06)" },
+          grid: { color: "rgba(255,255,255,0.05)" },
+          border: { display: false },
           ticks: {
-            color: "#9AA0AC",
+            color: "#9AA5BD",
+            font: { family: "'JetBrains Mono', monospace", size: 10.5 },
             callback: (v) => formatarValor(v)
           }
         },
         y: {
           grid: { display: false },
-          ticks: { color: "#9AA0AC" }
+          border: { display: false },
+          ticks: { color: "#9AA5BD", font: { family: "'Inter', sans-serif", size: 11.5, weight: "600" } }
         }
       }
     }
   });
-
-  // A cor de destaque (tendência) fica reservada para uso futuro em
-  // variações de tema; hoje o próprio texto acima do gráfico já indica
-  // crescimento/queda/estabilidade com ícone e palavra, não só cor.
-  void corTendencia;
 }
 
 function destruirTodosOsGraficos() {
@@ -2658,24 +2782,30 @@ function construirGaugeSVG({ bronze, prata, ouro, valor }) {
 
   const anguloPara = (v) => 180 - (Math.min(Math.max(v, 0), escalaMax) / escalaMax) * 180;
 
-  const desenharArco = (vInicio, vFim, cor) => {
+  const desenharArco = (vInicio, vFim, cor, espessuraArco = espessura) => {
     const a1 = anguloPara(vInicio);
     const a2 = anguloPara(vFim);
     const p1 = polarParaCartesiano(cx, cy, raio, a1);
     const p2 = polarParaCartesiano(cx, cy, raio, a2);
     const largeArc = Math.abs(a1 - a2) > 180 ? 1 : 0;
-    return `<path d="M ${p1.x.toFixed(2)} ${p1.y.toFixed(2)} A ${raio} ${raio} 0 ${largeArc} 1 ${p2.x.toFixed(2)} ${p2.y.toFixed(2)}" stroke="${cor}" stroke-width="${espessura}" fill="none" stroke-linecap="butt" />`;
+    return `<path d="M ${p1.x.toFixed(2)} ${p1.y.toFixed(2)} A ${raio} ${raio} 0 ${largeArc} 1 ${p2.x.toFixed(2)} ${p2.y.toFixed(2)}" stroke="${cor}" stroke-width="${espessuraArco}" fill="none" stroke-linecap="butt" />`;
   };
+
+  // Trilho de base (bem discreto) por trás das zonas, para dar
+  // sensação de "encaixe" às cores, como um mostrador de instrumento.
+  const trilhoBase = desenharArco(0, escalaMax, "rgba(255,255,255,0.05)", espessura + 6);
 
   const zonas = [
     desenharArco(0, bronze, CORES_ESCALA.zonaBase),
     desenharArco(bronze, prata, CORES_ESCALA.bronze),
     desenharArco(prata, ouro, CORES_ESCALA.prata),
-    desenharArco(ouro, escalaMax, CORES_ESCALA.ouro)
+    desenharArco(ouro, escalaMax, "url(#gaugeOuroGradiente)")
   ].join("");
 
   const anguloValor = anguloPara(valor);
-  const pontaPonteiro = polarParaCartesiano(cx, cy, raio - espessura / 2 - 6, anguloValor);
+  const pontaPonteiro = polarParaCartesiano(cx, cy, raio - espessura / 2 - 10, anguloValor);
+  const baseEsq = polarParaCartesiano(cx, cy, 10, anguloValor + 90);
+  const baseDir = polarParaCartesiano(cx, cy, 10, anguloValor - 90);
 
   const marcador = (v) => {
     const a = anguloPara(v);
@@ -2688,10 +2818,30 @@ function construirGaugeSVG({ bronze, prata, ouro, valor }) {
 
   return `
     <svg viewBox="0 0 320 190" class="gauge-svg" role="img" aria-label="Velocímetro de progresso das metas de faturamento do mês">
+      <defs>
+        <linearGradient id="gaugeOuroGradiente" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" stop-color="#F6D374" />
+          <stop offset="100%" stop-color="#C99A2E" />
+        </linearGradient>
+        <linearGradient id="gaugePonteiroGradiente" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#6FA8FF" />
+          <stop offset="100%" stop-color="#4FD8E8" />
+        </linearGradient>
+        <filter id="gaugeGlow" x="-60%" y="-60%" width="220%" height="220%">
+          <feGaussianBlur stdDeviation="3.5" result="blur" />
+          <feMerge>
+            <feMergeNode in="blur" />
+            <feMergeNode in="SourceGraphic" />
+          </feMerge>
+        </filter>
+      </defs>
+
+      ${trilhoBase}
       ${zonas}
-      <line x1="${cx}" y1="${cy}" x2="${pontaPonteiro.x.toFixed(2)}" y2="${pontaPonteiro.y.toFixed(2)}"
-            stroke="var(--text-primary)" stroke-width="4" stroke-linecap="round" />
-      <circle cx="${cx}" cy="${cy}" r="8" fill="var(--text-primary)" />
+
+      <polygon points="${pontaPonteiro.x.toFixed(2)},${pontaPonteiro.y.toFixed(2)} ${baseEsq.x.toFixed(2)},${baseEsq.y.toFixed(2)} ${baseDir.x.toFixed(2)},${baseDir.y.toFixed(2)}"
+               fill="url(#gaugePonteiroGradiente)" filter="url(#gaugeGlow)" />
+      <circle cx="${cx}" cy="${cy}" r="10" fill="var(--bg-elevated)" stroke="url(#gaugePonteiroGradiente)" stroke-width="3" />
 
       <text x="${pBronze.x.toFixed(2)}" y="${pBronze.y.toFixed(2)}" class="gauge-value-label" font-size="9" fill="var(--tier-bronze)">B</text>
       <text x="${pPrata.x.toFixed(2)}" y="${pPrata.y.toFixed(2)}" class="gauge-value-label" font-size="9" fill="var(--tier-prata)">P</text>
@@ -2708,6 +2858,43 @@ function construirGaugeLegendaHTML() {
       <span><span class="tier-dot tier-prata"></span>Prata</span>
       <span><span class="tier-dot tier-ouro"></span>Ouro</span>
     </div>
+  `;
+}
+
+/**
+ * Constrói um pequeno anel de progresso circular (SVG), usado como
+ * elemento visual de apoio ao lado de um número — mostra a % de forma
+ * compacta e imediata, complementando o velocímetro principal.
+ * `percentual` pode passar de 100 (o anel satura em 100% preenchido,
+ * mas o texto sempre mostra o valor real).
+ */
+function construirAnelProgresso(percentual, tamanho = 64) {
+  const raio = (tamanho - 8) / 2;
+  const cx = tamanho / 2;
+  const cy = tamanho / 2;
+  const perimetro = 2 * Math.PI * raio;
+  const pct = percentual === null ? 0 : Math.max(0, Math.min(percentual, 100));
+  const preenchido = (pct / 100) * perimetro;
+
+  return `
+    <svg viewBox="0 0 ${tamanho} ${tamanho}" width="${tamanho}" height="${tamanho}" class="ring-progress" role="img" aria-label="${percentual === null ? "Meta não informada" : percentual.toFixed(0) + "% da meta"}">
+      <circle cx="${cx}" cy="${cy}" r="${raio}" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="5" />
+      <circle cx="${cx}" cy="${cy}" r="${raio}" fill="none" stroke="url(#ringGradiente)" stroke-width="5"
+              stroke-linecap="round" stroke-dasharray="${perimetro.toFixed(2)}"
+              stroke-dashoffset="${(perimetro - preenchido).toFixed(2)}"
+              transform="rotate(-90 ${cx} ${cy})" filter="url(#ringGlow)" />
+      <defs>
+        <linearGradient id="ringGradiente" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#4FD8E8" />
+          <stop offset="100%" stop-color="#3D7FFF" />
+        </linearGradient>
+        <filter id="ringGlow" x="-50%" y="-50%" width="200%" height="200%">
+          <feGaussianBlur stdDeviation="1.6" result="blur" />
+          <feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge>
+        </filter>
+      </defs>
+      <text x="${cx}" y="${cy + 4}" text-anchor="middle" class="ring-progress-text" font-size="13" font-weight="700" fill="var(--text-primary)">${percentual === null ? "—" : Math.round(percentual) + "%"}</text>
+    </svg>
   `;
 }
 
@@ -2762,13 +2949,12 @@ function gerarRelatorio(appState) {
   const metaBronze = lerMoeda("metaBronze");
   const metaPrata = lerMoeda("metaPrata");
   const metaOuro = lerMoeda("metaOuro");
-  const acumulado = lerMoeda("faturamentoAcumuladoMes") ?? 0;
   const brutoHoje = (comparativos.faturamentoClube.atual ?? 0) + (comparativos.faturamentoAvulso.atual ?? 0);
 
   const dataRelatorio = appState.meta.dataRelatorio;
   const diasRestantes = diasRestantesNoMes(dataRelatorio);
   const progressoMetas = calcularProgressoMetas(
-    acumulado,
+    brutoHoje,
     { bronze: metaBronze, prata: metaPrata, ouro: metaOuro },
     diasRestantes
   );
@@ -2789,7 +2975,6 @@ function gerarRelatorio(appState) {
       bronze: metaBronze,
       prata: metaPrata,
       ouro: metaOuro,
-      acumulado,
       brutoHoje,
       diasRestantes,
       progresso: progressoMetas
@@ -3032,7 +3217,7 @@ function renderizarMovimentacao(relatorio) {
 }
 
 function renderizarGauge(relatorio) {
-  const { bronze, prata, ouro, acumulado, brutoHoje, diasRestantes, progresso } = relatorio.metas;
+  const { bronze, prata, ouro, brutoHoje, diasRestantes, progresso } = relatorio.metas;
 
   const visual = document.getElementById("gaugeVisual");
   const metasValidas = bronze !== null && prata !== null && ouro !== null;
@@ -3043,9 +3228,9 @@ function renderizarGauge(relatorio) {
     return;
   }
 
-  visual.innerHTML = construirGaugeSVG({ bronze, prata, ouro, valor: acumulado }) + construirGaugeLegendaHTML();
+  visual.innerHTML = construirGaugeSVG({ bronze, prata, ouro, valor: brutoHoje }) + construirGaugeLegendaHTML();
 
-  const percentualOuro = ouro > 0 ? (acumulado / ouro) * 100 : null;
+  const percentualOuro = ouro > 0 ? (brutoHoje / ouro) * 100 : null;
 
   const linhasEscala = ["bronze", "prata", "ouro"].map((escala) => {
     const dado = progresso.escalas[escala];
@@ -3073,13 +3258,15 @@ function renderizarGauge(relatorio) {
   }).join("");
 
   document.getElementById("gaugeSideStats").innerHTML = `
-    <div class="metric-card metric-highlight" style="margin-bottom: 4px;">
-      <span class="metric-label">Faturamento acumulado do mês</span>
-      <span class="metric-value">R$ ${formatCentsToBRL(acumulado)}</span>
-      <span class="metric-sub">
-        ${percentualOuro !== null ? `${percentualOuro.toFixed(1)}% da meta Ouro` : "Meta Ouro não informada"}
-        · Faturamento bruto hoje: R$ ${formatCentsToBRL(brutoHoje)}
-      </span>
+    <div class="ring-progress-row">
+      ${construirAnelProgresso(percentualOuro, 68)}
+      <div class="metric-card metric-highlight">
+        <span class="metric-label">Faturamento bruto hoje</span>
+        <span class="metric-value">R$ ${formatCentsToBRL(brutoHoje)}</span>
+        <span class="metric-sub">
+          ${percentualOuro !== null ? `${percentualOuro.toFixed(1)}% da meta Ouro` : "Meta Ouro não informada"}
+        </span>
+      </div>
     </div>
     ${linhasEscala}
   `;
@@ -3137,8 +3324,7 @@ const appState = {
     clubeHoje: "", clubeAnterior: "",
     avulsoHoje: "", avulsoAnterior: "",
     assinantesAtivos: "",
-    metaBronze: "", metaPrata: "", metaOuro: "",
-    faturamentoAcumuladoMes: ""
+    metaBronze: "", metaPrata: "", metaOuro: ""
   },
   csv: {
     vendidos: estadoCsvVazio(),
@@ -3415,10 +3601,15 @@ function atualizarCalculosAvancados() {
 }
 
 /** Faturamento bruto de hoje = Clube hoje + Avulso hoje (somente leitura). */
-function atualizarFaturamentoBrutoHoje() {
+/** Faturamento bruto de hoje = Clube hoje + Avulso hoje (em centavos). */
+function calcularFaturamentoBrutoHojeCents() {
   const clube = parseMoneyToCents(document.getElementById("clubeHoje").value);
   const avulso = parseMoneyToCents(document.getElementById("avulsoHoje").value);
-  const bruto = (clube ?? 0) + (avulso ?? 0);
+  return (clube ?? 0) + (avulso ?? 0);
+}
+
+function atualizarFaturamentoBrutoHoje() {
+  const bruto = calcularFaturamentoBrutoHojeCents();
   document.getElementById("faturamentoBrutoHojeDisplay").textContent = `R$ ${formatCentsToBRL(bruto)}`;
 }
 
@@ -3429,7 +3620,7 @@ function atualizarProgressoMetas() {
   const bronze = parseMoneyToCents(document.getElementById("metaBronze").value);
   const prata = parseMoneyToCents(document.getElementById("metaPrata").value);
   const ouro = parseMoneyToCents(document.getElementById("metaOuro").value);
-  const acumulado = parseMoneyToCents(document.getElementById("faturamentoAcumuladoMes").value);
+  const brutoHoje = calcularFaturamentoBrutoHojeCents();
 
   const ordemErroEl = document.getElementById("err-ordemMetas");
   const resultadoOrdem = validarOrdemMetas(bronze, prata, ouro);
@@ -3449,7 +3640,7 @@ function atualizarProgressoMetas() {
 
   const nenhumaMetaInformada = bronze === null && prata === null && ouro === null;
 
-  if (acumulado === null || nenhumaMetaInformada || !resultadoOrdem.valid) {
+  if (nenhumaMetaInformada || !resultadoOrdem.valid) {
     vazioEl.hidden = false;
     Object.values(linhas).forEach((linha) => { linha.hidden = true; });
     return;
@@ -3458,7 +3649,7 @@ function atualizarProgressoMetas() {
   vazioEl.hidden = true;
 
   const diasRestantes = diasRestantesNoMes(appState.meta.dataRelatorio);
-  const progresso = calcularProgressoMetas(acumulado, { bronze, prata, ouro }, diasRestantes);
+  const progresso = calcularProgressoMetas(brutoHoje, { bronze, prata, ouro }, diasRestantes);
 
   for (const escala of ["bronze", "prata", "ouro"]) {
     const dado = progresso.escalas[escala];

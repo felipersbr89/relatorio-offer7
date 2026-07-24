@@ -537,6 +537,12 @@ a { color: var(--accent-light); }
   border-radius: var(--radius-sm);
 }
 
+/* Mesma correção crítica: garante que o hidden funcione mesmo com
+   display:flex definido acima. */
+.meta-progress-row[hidden] {
+  display: none;
+}
+
 .tier-badge {
   flex-shrink: 0;
   font-family: var(--font-mono);
@@ -1050,6 +1056,15 @@ a { color: var(--accent-light); }
   justify-content: center;
   z-index: 100;
   padding: 20px;
+}
+
+/* CORREÇÃO CRÍTICA: sem esta regra, o atributo HTML "hidden" pode ser
+   ignorado pelo navegador, porque a regra ".modal-overlay { display: flex }"
+   acima tem prioridade sobre o "display:none" padrão do hidden. Esta regra
+   garante que, sempre que o atributo hidden estiver presente, o modal
+   realmente desapareça da tela. */
+.modal-overlay[hidden] {
+  display: none;
 }
 
 .modal {

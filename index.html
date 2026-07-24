@@ -1442,21 +1442,21 @@ License: MIT
 </header>
 
 <!-- ===================== MODAL DE CONFIRMAÇÃO ===================== -->
-<div class="modal-overlay" id="confirmModal" hidden>
+<div class="modal-overlay" id="confirmModal" hidden onclick="if(event.target===this){this.hidden=true;}">
   <div class="modal" role="alertdialog" aria-modal="true" aria-labelledby="confirmTitle" aria-describedby="confirmDesc">
     <h2 id="confirmTitle">Limpar todo o relatório?</h2>
     <p id="confirmDesc">Todos os campos preenchidos, arquivos importados e o relatório gerado serão apagados. Esta ação não pode ser desfeita.</p>
     <div class="modal-actions">
-      <button type="button" class="btn btn-ghost" id="btnCancelClear">Cancelar</button>
+      <button type="button" class="btn btn-ghost" id="btnCancelClear" onclick="document.getElementById('confirmModal').hidden = true;">Cancelar</button>
       <button type="button" class="btn btn-danger" id="btnConfirmClear">Sim, limpar tudo</button>
     </div>
   </div>
 </div>
 
 <!-- ===================== MODAL DE SELEÇÃO MANUAL DA COLUNA DE NOME ===================== -->
-<div class="modal-overlay" id="columnPickerModal" hidden>
+<div class="modal-overlay" id="columnPickerModal" hidden onclick="if(event.target===this){this.hidden=true;}">
   <div class="modal modal-wide" role="alertdialog" aria-modal="true" aria-labelledby="columnPickerTitle">
-    <button type="button" class="modal-close-x" id="btnCloseColumnX" aria-label="Fechar">&times;</button>
+    <button type="button" class="modal-close-x" id="btnCloseColumnX" aria-label="Fechar" onclick="document.getElementById('columnPickerModal').hidden = true;">&times;</button>
     <h2 id="columnPickerTitle">Qual coluna contém os nomes?</h2>
     <p>
       Não conseguimos identificar automaticamente a coluna de nomes neste arquivo.
@@ -1467,7 +1467,7 @@ License: MIT
     <div class="column-picker-list" id="columnPickerList"></div>
 
     <div class="modal-actions">
-      <button type="button" class="btn btn-ghost" id="btnCancelColumn">Cancelar</button>
+      <button type="button" class="btn btn-ghost" id="btnCancelColumn" onclick="document.getElementById('columnPickerModal').hidden = true;">Cancelar</button>
       <button type="button" class="btn btn-primary" id="btnConfirmColumn" disabled>Confirmar coluna</button>
     </div>
   </div>

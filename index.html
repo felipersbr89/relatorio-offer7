@@ -961,7 +961,26 @@ a { color: var(--accent-light); }
 }
 
 /* ---- Modal de seleção de coluna ---- */
-.modal-wide { max-width: 460px; }
+.modal-wide { max-width: 460px; position: relative; }
+
+.modal-close-x {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  border: 1px solid var(--border-strong);
+  background: var(--bg-elevated);
+  color: var(--text-secondary);
+  font-size: 18px;
+  line-height: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.modal-close-x:hover { background: var(--surface-hover); color: var(--text-primary); }
 
 .column-picker-list {
   margin-top: 16px;
@@ -1437,6 +1456,7 @@ License: MIT
 <!-- ===================== MODAL DE SELEÇÃO MANUAL DA COLUNA DE NOME ===================== -->
 <div class="modal-overlay" id="columnPickerModal" hidden>
   <div class="modal modal-wide" role="alertdialog" aria-modal="true" aria-labelledby="columnPickerTitle">
+    <button type="button" class="modal-close-x" id="btnCloseColumnX" aria-label="Fechar">&times;</button>
     <h2 id="columnPickerTitle">Qual coluna contém os nomes?</h2>
     <p>
       Não conseguimos identificar automaticamente a coluna de nomes neste arquivo.
@@ -3575,14 +3595,20 @@ function finalizarProcessamento(tipo, file, rows, colunaNome) {
 
 function mostrarErroUpload(tipo, mensagem) {
   const capitalizado = tipo.charAt(0).toUpperCase() + tipo.slice(1);
+
+  // Nunca deixa um elemento ausente travar o fluxo (ex.: impedir o
+  // fechamento do modal de seleção de coluna) — cada acesso é opcional.
   const erroEl = document.getElementById(`error${capitalizado}`);
-  erroEl.textContent = mensagem;
+  if (erroEl) erroEl.textContent = mensagem;
 
   appState.csv[tipo] = estadoCsvVazio();
   appState.csv[tipo].status = "erro";
 
-  document.getElementById(`loaded${capitalizado}`).hidden = true;
-  document.getElementById(`dropzone${capitalizado}`).hidden = false;
+  const loadedEl = document.getElementById(`loaded${capitalizado}`);
+  if (loadedEl) loadedEl.hidden = true;
+
+  const dropzoneEl = document.getElementById(`dropzone${capitalizado}`);
+  if (dropzoneEl) dropzoneEl.hidden = false;
 
   avaliarBotaoGerar();
 }
@@ -3643,32 +3669,39 @@ function inicializarColumnPicker() {
   const overlay = document.getElementById("columnPickerModal");
   const btnCancel = document.getElementById("btnCancelColumn");
   const btnConfirm = document.getElementById("btnConfirmColumn");
+  const btnCloseX = document.getElementById("btnCloseColumnX");
 
   const fechar = () => {
     overlay.hidden = true;
     selecaoColunaPendente = null;
   };
 
-  btnCancel.addEventListener("click", () => {
-    if (selecaoColunaPendente) {
-      mostrarErroUpload(
-        selecaoColunaPendente.tipo,
-        "Nenhuma coluna foi selecionada. Importe o arquivo novamente para tentar de novo."
-      );
-    }
-    fechar();
-  });
-
-  overlay.addEventListener("click", (e) => {
-    if (e.target === overlay) {
+  // fechar() SEMPRE roda, mesmo se marcar o erro do upload falhar por
+  // algum motivo inesperado — o usuário nunca deve ficar preso no modal.
+  const cancelarSelecao = () => {
+    try {
       if (selecaoColunaPendente) {
         mostrarErroUpload(
           selecaoColunaPendente.tipo,
           "Nenhuma coluna foi selecionada. Importe o arquivo novamente para tentar de novo."
         );
       }
+    } catch (err) {
+      console.error("Falha ao cancelar seleção de coluna:", err);
+    } finally {
       fechar();
     }
+  };
+
+  btnCancel.addEventListener("click", cancelarSelecao);
+  if (btnCloseX) btnCloseX.addEventListener("click", cancelarSelecao);
+
+  overlay.addEventListener("click", (e) => {
+    if (e.target === overlay) cancelarSelecao();
+  });
+
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && overlay.hidden === false) cancelarSelecao();
   });
 
   btnConfirm.addEventListener("click", () => {
@@ -3676,9 +3709,15 @@ function inicializarColumnPicker() {
     const escolhida = overlay.querySelector('input[name="colunaEscolhida"]:checked');
     if (!escolhida) return;
 
-    const { tipo, file, rows } = selecaoColunaPendente;
-    finalizarProcessamento(tipo, file, rows, escolhida.value);
-    fechar();
+    try {
+      const { tipo, file, rows } = selecaoColunaPendente;
+      finalizarProcessamento(tipo, file, rows, escolhida.value);
+    } catch (err) {
+      console.error("Falha ao confirmar coluna selecionada:", err);
+      mostrarToast("Não foi possível processar a coluna selecionada. Tente novamente.", "error");
+    } finally {
+      fechar();
+    }
   });
 }
 
@@ -3730,34 +3769,40 @@ function inicializarLimparRelatorio() {
   overlay.addEventListener("click", (e) => { if (e.target === overlay) fecharModal(); });
 
   btnConfirm.addEventListener("click", () => {
-    limparEstado();
+    try {
+      limparEstado();
 
-    for (const campo of CAMPOS_MANUAIS) {
-      appState.manual[campo.id] = "";
-      const el = document.getElementById(campo.id);
-      if (el) {
-        el.value = "";
-        el.classList.remove("is-invalid");
+      for (const campo of CAMPOS_MANUAIS) {
+        appState.manual[campo.id] = "";
+        const el = document.getElementById(campo.id);
+        if (el) {
+          el.value = "";
+          el.classList.remove("is-invalid");
+        }
+        const erroEl = document.getElementById(`err-${campo.id}`);
+        if (erroEl) erroEl.textContent = "";
       }
-      const erroEl = document.getElementById(`err-${campo.id}`);
-      if (erroEl) erroEl.textContent = "";
+
+      appState.meta.dataRelatorio = hojeISO();
+      document.getElementById("reportDate").value = appState.meta.dataRelatorio;
+      atualizarDicaComparativa();
+
+      resetarUpload("vendidos");
+      resetarUpload("cancelados");
+
+      atualizarTodasAsPrevias();
+      atualizarCalculosAvancados();
+      definirStatus("rascunho");
+      avaliarBotaoGerar();
+      ultimoRelatorio = null;
+      mostrarFormulario();
+      mostrarToast("Relatório limpo com sucesso.", "success");
+    } catch (err) {
+      console.error("Falha ao limpar o relatório:", err);
+      mostrarToast("Algo deu errado ao limpar o relatório. Tente recarregar a página.", "error");
+    } finally {
+      fecharModal();
     }
-
-    appState.meta.dataRelatorio = hojeISO();
-    document.getElementById("reportDate").value = appState.meta.dataRelatorio;
-    atualizarDicaComparativa();
-
-    resetarUpload("vendidos");
-    resetarUpload("cancelados");
-
-    atualizarTodasAsPrevias();
-    atualizarCalculosAvancados();
-    definirStatus("rascunho");
-    avaliarBotaoGerar();
-    fecharModal();
-    ultimoRelatorio = null;
-    mostrarFormulario();
-    mostrarToast("Relatório limpo com sucesso.", "success");
   });
 }
 

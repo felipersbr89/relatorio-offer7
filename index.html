@@ -1509,17 +1509,23 @@ License: MIT
           <span class="card-icon" data-lucide="scissors" aria-hidden="true"></span>
           Serviços extras
         </legend>
-        <p class="card-hint">Quantidade de serviços extras realizados (não é valor financeiro).</p>
+        <p class="card-hint">Valor em reais faturado com serviços extras.</p>
 
         <div class="input-row">
           <div class="field">
             <label for="servicosHoje">Hoje</label>
-            <input type="text" inputmode="numeric" id="servicosHoje" name="servicosHoje" placeholder="Ex.: 18" autocomplete="off">
+            <div class="money-field">
+              <span class="money-prefix">R$</span>
+              <input type="text" inputmode="decimal" id="servicosHoje" name="servicosHoje" placeholder="0,00" autocomplete="off">
+            </div>
             <span class="field-error" id="err-servicosHoje" role="alert"></span>
           </div>
           <div class="field">
             <label for="servicosAnterior">Mesma data — mês anterior</label>
-            <input type="text" inputmode="numeric" id="servicosAnterior" name="servicosAnterior" placeholder="Ex.: 15" autocomplete="off">
+            <div class="money-field">
+              <span class="money-prefix">R$</span>
+              <input type="text" inputmode="decimal" id="servicosAnterior" name="servicosAnterior" placeholder="0,00" autocomplete="off">
+            </div>
             <span class="field-error" id="err-servicosAnterior" role="alert"></span>
           </div>
         </div>
@@ -1533,17 +1539,23 @@ License: MIT
           <span class="card-icon" data-lucide="package" aria-hidden="true"></span>
           Produtos vendidos
         </legend>
-        <p class="card-hint">Quantidade de produtos vendidos (não é valor financeiro).</p>
+        <p class="card-hint">Valor em reais faturado com a venda de produtos.</p>
 
         <div class="input-row">
           <div class="field">
             <label for="produtosHoje">Hoje</label>
-            <input type="text" inputmode="numeric" id="produtosHoje" name="produtosHoje" placeholder="Ex.: 9" autocomplete="off">
+            <div class="money-field">
+              <span class="money-prefix">R$</span>
+              <input type="text" inputmode="decimal" id="produtosHoje" name="produtosHoje" placeholder="0,00" autocomplete="off">
+            </div>
             <span class="field-error" id="err-produtosHoje" role="alert"></span>
           </div>
           <div class="field">
             <label for="produtosAnterior">Mesma data — mês anterior</label>
-            <input type="text" inputmode="numeric" id="produtosAnterior" name="produtosAnterior" placeholder="Ex.: 11" autocomplete="off">
+            <div class="money-field">
+              <span class="money-prefix">R$</span>
+              <input type="text" inputmode="decimal" id="produtosAnterior" name="produtosAnterior" placeholder="0,00" autocomplete="off">
+            </div>
             <span class="field-error" id="err-produtosAnterior" role="alert"></span>
           </div>
         </div>
@@ -2225,10 +2237,10 @@ function validateMoneyField(rawValue, { obrigatorio = true } = {}) {
  * usada por app.js para validar tudo de forma consistente.
  */
 const CAMPOS_MANUAIS = [
-  { id: "servicosHoje", tipo: "inteiro" },
-  { id: "servicosAnterior", tipo: "inteiro" },
-  { id: "produtosHoje", tipo: "inteiro" },
-  { id: "produtosAnterior", tipo: "inteiro" },
+  { id: "servicosHoje", tipo: "moeda" },
+  { id: "servicosAnterior", tipo: "moeda" },
+  { id: "produtosHoje", tipo: "moeda" },
+  { id: "produtosAnterior", tipo: "moeda" },
   { id: "clubeHoje", tipo: "moeda" },
   { id: "clubeAnterior", tipo: "moeda" },
   { id: "avulsoHoje", tipo: "moeda" },
@@ -2728,8 +2740,8 @@ function gerarRelatorio(appState) {
   const lerMoeda = (id) => parseMoneyToCents(document.getElementById(id).value);
 
   const comparativos = {
-    servicosExtras: { atual: lerInt("servicosHoje"), anterior: lerInt("servicosAnterior"), tipo: "inteiro" },
-    produtosVendidos: { atual: lerInt("produtosHoje"), anterior: lerInt("produtosAnterior"), tipo: "inteiro" },
+    servicosExtras: { atual: lerMoeda("servicosHoje"), anterior: lerMoeda("servicosAnterior"), tipo: "moeda" },
+    produtosVendidos: { atual: lerMoeda("produtosHoje"), anterior: lerMoeda("produtosAnterior"), tipo: "moeda" },
     faturamentoClube: { atual: lerMoeda("clubeHoje"), anterior: lerMoeda("clubeAnterior"), tipo: "moeda" },
     faturamentoAvulso: { atual: lerMoeda("avulsoHoje"), anterior: lerMoeda("avulsoAnterior"), tipo: "moeda" }
   };
@@ -2927,8 +2939,8 @@ function renderizarCards(relatorio) {
   grid.innerHTML = "";
 
   const cards = [
-    { label: "Serviços extras hoje", valor: formatarValorIndicador("inteiro", relatorio.comparativos.servicosExtras.atual) },
-    { label: "Produtos vendidos hoje", valor: formatarValorIndicador("inteiro", relatorio.comparativos.produtosVendidos.atual) },
+    { label: "Serviços extras hoje", valor: formatarValorIndicador("moeda", relatorio.comparativos.servicosExtras.atual) },
+    { label: "Produtos vendidos hoje", valor: formatarValorIndicador("moeda", relatorio.comparativos.produtosVendidos.atual) },
     { label: "Faturamento Clube hoje", valor: formatarValorIndicador("moeda", relatorio.comparativos.faturamentoClube.atual) },
     { label: "Faturamento Avulso hoje", valor: formatarValorIndicador("moeda", relatorio.comparativos.faturamentoAvulso.atual) },
     { label: "Total de assinantes ativos", valor: `${relatorio.assinantesAtivos ?? 0}`, destaque: true },
@@ -2955,8 +2967,8 @@ function renderizarCards(relatorio) {
 }
 
 const CONFIG_COMPARATIVOS = [
-  { chave: "servicosExtras", titulo: "Serviços extras", tipo: "inteiro" },
-  { chave: "produtosVendidos", titulo: "Produtos vendidos", tipo: "inteiro" },
+  { chave: "servicosExtras", titulo: "Serviços extras", tipo: "moeda" },
+  { chave: "produtosVendidos", titulo: "Produtos vendidos", tipo: "moeda" },
   { chave: "faturamentoClube", titulo: "Faturamento Clube", tipo: "moeda" },
   { chave: "faturamentoAvulso", titulo: "Faturamento Avulso", tipo: "moeda" }
 ];
@@ -3142,8 +3154,8 @@ let ultimoRelatorio = null; // último objeto de relatório gerado, usado por "C
 
 // Pares de campos que geram prévia de comparativo em tempo real
 const BLOCOS_COMPARATIVOS = [
-  { bloco: "servicosExtras", hoje: "servicosHoje", anterior: "servicosAnterior", tipo: "inteiro" },
-  { bloco: "produtosVendidos", hoje: "produtosHoje", anterior: "produtosAnterior", tipo: "inteiro" },
+  { bloco: "servicosExtras", hoje: "servicosHoje", anterior: "servicosAnterior", tipo: "moeda" },
+  { bloco: "produtosVendidos", hoje: "produtosHoje", anterior: "produtosAnterior", tipo: "moeda" },
   { bloco: "faturamentoClube", hoje: "clubeHoje", anterior: "clubeAnterior", tipo: "moeda" },
   { bloco: "faturamentoAvulso", hoje: "avulsoHoje", anterior: "avulsoAnterior", tipo: "moeda" }
 ];

@@ -3137,28 +3137,46 @@ const BLOCOS_COMPARATIVOS = [
 /* Inicialização                                                        */
 /* ------------------------------------------------------------------ */
 
-document.addEventListener("DOMContentLoaded", () => {
+/**
+ * Executa uma etapa de inicialização isoladamente: se ela falhar, o erro
+ * é registrado no console e a aplicação segue para a PRÓXIMA etapa — uma
+ * falha isolada (ex.: dados antigos e incompatíveis no localStorage)
+ * nunca deve impedir outras partes da aplicação (como os botões de um
+ * modal completamente independente) de serem configuradas.
+ */
+const falhasInicializacao = [];
+
+function etapaSegura(nomeEtapa, fn) {
   try {
-    inicializarIcones();
-    verificarStorageDisponivel();
-    restaurarEstadoSalvo();
-    inicializarDataReferencia();
-    inicializarMascaras();
-    inicializarValidacaoAoVivo();
-    atualizarTodasAsPrevias();
-    atualizarCalculosAvancados();
-    inicializarUpload("vendidos");
-    inicializarUpload("cancelados");
-    inicializarColumnPicker();
-    avaliarBotaoGerar();
-    inicializarLimparRelatorio();
-    inicializarRelatorio();
+    fn();
   } catch (err) {
-    // Blindagem geral: um erro inesperado em qualquer etapa da inicialização
-    // não deve deixar a página em branco ou travada — o usuário é avisado
-    // e pode tentar recarregar, em vez de ficar sem nenhum retorno visual.
-    console.error("Falha ao inicializar a aplicação:", err);
-    mostrarToast("Algo deu errado ao carregar a página. Tente recarregar.", "error");
+    console.error(`Falha na etapa de inicialização "${nomeEtapa}":`, err);
+    falhasInicializacao.push(nomeEtapa);
+  }
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  etapaSegura("icones", inicializarIcones);
+  etapaSegura("verificar storage", verificarStorageDisponivel);
+  etapaSegura("restaurar estado salvo", restaurarEstadoSalvo);
+  etapaSegura("data de referência", inicializarDataReferencia);
+  etapaSegura("máscaras", inicializarMascaras);
+  etapaSegura("validação ao vivo", inicializarValidacaoAoVivo);
+  etapaSegura("prévias", atualizarTodasAsPrevias);
+  etapaSegura("cálculos avançados", atualizarCalculosAvancados);
+  etapaSegura("upload vendidos", () => inicializarUpload("vendidos"));
+  etapaSegura("upload cancelados", () => inicializarUpload("cancelados"));
+  etapaSegura("seletor de coluna", inicializarColumnPicker);
+  etapaSegura("botão gerar", avaliarBotaoGerar);
+  etapaSegura("limpar relatório", inicializarLimparRelatorio);
+  etapaSegura("relatório", inicializarRelatorio);
+
+  if (falhasInicializacao.length > 0) {
+    mostrarToast(
+      `Algumas partes da página não carregaram corretamente (${falhasInicializacao.join(", ")}). ` +
+      `Tente recarregar a página. Se persistir, abra o Console do navegador (F12) para ver o erro completo.`,
+      "error"
+    );
   }
 });
 

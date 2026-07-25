@@ -569,9 +569,11 @@ a { color: var(--accent-light); }
 
 .meta-progress-row {
   display: flex;
-  align-items: flex-start;
-  gap: 12px;
-  padding: 10px 12px;
+  align-items: center;
+  flex-wrap: wrap;
+  row-gap: 4px;
+  column-gap: 12px;
+  padding: 10px 14px;
   background: var(--bg-elevated);
   border: 1px solid var(--border);
   border-radius: var(--radius-sm);
@@ -598,12 +600,22 @@ a { color: var(--accent-light); }
 .tier-badge-ouro { background: rgba(232,185,78,0.16); color: var(--tier-ouro); }
 
 .meta-progress-text {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  column-gap: 10px;
+  row-gap: 4px;
   font-size: 12.5px;
   color: var(--text-secondary);
-  line-height: 1.5;
+  line-height: 1.4;
+  flex: 1;
+  min-width: 0;
 }
-.meta-progress-text strong { color: var(--text-primary); }
-.meta-progress-text .achieved { color: var(--success); font-weight: 600; }
+/* Cada trecho (a meta, o quanto falta, o valor por dia...) nunca quebra
+   no meio — só o espaço ENTRE os trechos pode ir para a linha de baixo. */
+.meta-progress-text > span { white-space: nowrap; }
+.meta-progress-text strong { color: var(--text-primary); font-weight: 700; }
+.meta-progress-text .achieved { color: var(--success); font-weight: 700; }
 
 .card-note {
   display: flex;
@@ -737,11 +749,12 @@ a { color: var(--accent-light); }
 }
 
 .metric-card .metric-value {
-  font-family: var(--font-display);
-  font-size: 30px;
-  font-weight: 600;
-  letter-spacing: -0.015em;
+  font-family: var(--font-mono);
+  font-size: 21px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
   display: block;
+  white-space: nowrap;
 }
 
 .metric-card .metric-sub {
@@ -1357,11 +1370,12 @@ a { color: var(--accent-light); }
 }
 
 .rp-kpi-card .rp-kpi-value {
-  font-family: var(--font-display);
-  font-size: 5.4mm;
+  font-family: var(--font-mono);
+  font-size: 4.6mm;
   font-weight: 700;
   display: block;
   letter-spacing: -0.01em;
+  white-space: nowrap;
 }
 
 .rp-kpi-card.rp-highlight { border-color: rgba(61,127,255,0.4); }
@@ -1469,11 +1483,14 @@ a { color: var(--accent-light); }
 
 .rp-tier-line {
   display: flex;
+  flex-wrap: wrap;
   align-items: baseline;
-  gap: 2mm;
+  column-gap: 2mm;
+  row-gap: 0.6mm;
   font-size: 3.1mm;
   color: var(--text-secondary);
 }
+.rp-tier-line > span { white-space: nowrap; }
 
 .rp-tier-line b { color: var(--text-primary); }
 
@@ -3467,23 +3484,24 @@ function renderizarGauge(relatorio) {
     if (!dado) return "";
 
     const percentualTexto = dado.percentual !== null ? `${dado.percentual.toFixed(1)}%` : "—";
-    const valorMeta = `Meta <strong>R$ ${formatCentsToBRL(metasCents[escala])}</strong>`;
-    let texto;
+    const blocoMeta = `<span>Meta <strong>R$ ${formatCentsToBRL(metasCents[escala])}</strong></span>`;
+    let blocos;
 
     if (dado.atingida) {
-      texto = `${valorMeta} — <span class="achieved">✓ atingida</span> (${percentualTexto} do valor definido).`;
+      blocos = `${blocoMeta}<span class="achieved">✓ atingida (${percentualTexto})</span>`;
     } else if (diasRestantes === 0) {
-      texto = `${valorMeta} — faltam <strong>R$ ${formatCentsToBRL(dado.faltaCents)}</strong> (${percentualTexto}) — hoje é o último dia do mês.`;
+      blocos = `${blocoMeta}<span>faltam <strong>R$ ${formatCentsToBRL(dado.faltaCents)}</strong> (${percentualTexto})</span><span>último dia do mês</span>`;
     } else {
-      texto =
-        `${valorMeta} — faltam <strong>R$ ${formatCentsToBRL(dado.faltaCents)}</strong> (${percentualTexto}) · ` +
-        `<strong>R$ ${formatCentsToBRL(dado.faltaPorDiaCents)}</strong>/dia nos próximos ${diasRestantes} dia(s).`;
+      blocos =
+        `${blocoMeta}` +
+        `<span>faltam <strong>R$ ${formatCentsToBRL(dado.faltaCents)}</strong> (${percentualTexto})</span>` +
+        `<span><strong>R$ ${formatCentsToBRL(dado.faltaPorDiaCents)}</strong>/dia · ${diasRestantes}d restantes</span>`;
     }
 
     return `
       <div class="meta-progress-row" data-tier="${escala}">
         <span class="tier-badge tier-badge-${escala}">${ROTULOS_ESCALA[escala]}</span>
-        <span class="meta-progress-text">${texto}</span>
+        <span class="meta-progress-text">${blocos}</span>
       </div>
     `;
   }).join("");
@@ -3579,16 +3597,16 @@ function renderizarRelatorioImprimivel(relatorio) {
     const linhas = ["bronze", "prata", "ouro"].map((escala) => {
       const dado = progresso.escalas[escala];
       if (!dado) return "";
-      const valorMeta = `meta <b>R$ ${formatCentsToBRL(metasCentsCompact[escala])}</b>`;
-      let texto;
+      const blocoMeta = `<span>meta <b>R$ ${formatCentsToBRL(metasCentsCompact[escala])}</b></span>`;
+      let blocos;
       if (dado.atingida) {
-        texto = `${valorMeta} — <b>atingida</b> (${dado.percentual.toFixed(0)}%)`;
+        blocos = `${blocoMeta}<span><b>atingida</b> (${dado.percentual.toFixed(0)}%)</span>`;
       } else if (diasRestantes === 0) {
-        texto = `${valorMeta} — falta <b>R$ ${formatCentsToBRL(dado.faltaCents)}</b>`;
+        blocos = `${blocoMeta}<span>falta <b>R$ ${formatCentsToBRL(dado.faltaCents)}</b></span>`;
       } else {
-        texto = `${valorMeta} — falta <b>R$ ${formatCentsToBRL(dado.faltaCents)}</b> · <b>R$ ${formatCentsToBRL(dado.faltaPorDiaCents)}</b>/dia`;
+        blocos = `${blocoMeta}<span>falta <b>R$ ${formatCentsToBRL(dado.faltaCents)}</b></span><span><b>R$ ${formatCentsToBRL(dado.faltaPorDiaCents)}</b>/dia</span>`;
       }
-      return `<div class="rp-tier-line"><span class="rp-tier-tag ${escala}">${ROTULOS_ESCALA[escala]}</span> ${texto}</div>`;
+      return `<div class="rp-tier-line"><span class="rp-tier-tag ${escala}">${ROTULOS_ESCALA[escala]}</span>${blocos}</div>`;
     }).join("");
 
     gaugeEl.innerHTML =
@@ -3993,18 +4011,19 @@ function atualizarProgressoMetas() {
     const percentualTexto = dado.percentual !== null ? `${dado.percentual.toFixed(1)}%` : "—";
 
     const metasCentsPreview = { bronze, prata, ouro };
-    const valorMeta = `Meta <strong>R$ ${formatCentsToBRL(metasCentsPreview[escala])}</strong>`;
+    const blocoMeta = `<span>Meta <strong>R$ ${formatCentsToBRL(metasCentsPreview[escala])}</strong></span>`;
 
     if (dado.atingida) {
       textos[escala].innerHTML =
-        `${valorMeta} — <span class="achieved">✓ atingida</span> (${percentualTexto} do valor definido).`;
+        `${blocoMeta}<span class="achieved">✓ atingida (${percentualTexto})</span>`;
     } else if (diasRestantes === 0) {
       textos[escala].innerHTML =
-        `${valorMeta} — faltam <strong>R$ ${formatCentsToBRL(dado.faltaCents)}</strong> (${percentualTexto}) — hoje é o último dia do mês.`;
+        `${blocoMeta}<span>faltam <strong>R$ ${formatCentsToBRL(dado.faltaCents)}</strong> (${percentualTexto})</span><span>último dia do mês</span>`;
     } else {
       textos[escala].innerHTML =
-        `${valorMeta} — faltam <strong>R$ ${formatCentsToBRL(dado.faltaCents)}</strong> (${percentualTexto}) · ` +
-        `<strong>R$ ${formatCentsToBRL(dado.faltaPorDiaCents)}</strong>/dia nos próximos ${diasRestantes} dia(s).`;
+        `${blocoMeta}` +
+        `<span>faltam <strong>R$ ${formatCentsToBRL(dado.faltaCents)}</strong> (${percentualTexto})</span>` +
+        `<span><strong>R$ ${formatCentsToBRL(dado.faltaPorDiaCents)}</strong>/dia · ${diasRestantes}d restantes</span>`;
     }
   }
 }

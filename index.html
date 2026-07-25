@@ -1256,44 +1256,44 @@ a { color: var(--accent-light); }
   background: var(--bg);
   color: var(--text-primary);
   font-family: var(--font-body);
-  padding: 8mm;
+  padding: 10mm;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
-  gap: 4.5mm;
+  gap: 5mm;
   overflow: hidden;
 }
 
 .rp-header {
   display: flex;
   align-items: center;
-  gap: 4mm;
-  padding-bottom: 3mm;
+  gap: 5mm;
+  padding-bottom: 4mm;
   border-bottom: 1px solid var(--border);
   flex-shrink: 0;
 }
 
-.rp-logo { height: 9mm; width: auto; object-fit: contain; }
+.rp-logo { height: 11mm; width: auto; object-fit: contain; }
 
 .rp-header-text { flex: 1; min-width: 0; }
 
 .rp-header-text h1 {
   font-family: var(--font-display);
-  font-size: 5.4mm;
+  font-size: 6.6mm;
   font-weight: 700;
   margin: 0;
   letter-spacing: -0.01em;
 }
 
 .rp-header-text p {
-  font-size: 3mm;
+  font-size: 3.6mm;
   color: var(--text-secondary);
-  margin: 1mm 0 0;
+  margin: 1.2mm 0 0;
 }
 
 .rp-generated {
   font-family: var(--font-mono);
-  font-size: 2.6mm;
+  font-size: 3.2mm;
   color: var(--text-tertiary);
   white-space: nowrap;
 }
@@ -1301,58 +1301,56 @@ a { color: var(--accent-light); }
 .rp-body {
   flex: 1;
   display: flex;
-  gap: 6mm;
+  gap: 7mm;
   min-height: 0;
 }
 
 .rp-col {
   display: flex;
   flex-direction: column;
-  gap: 3.5mm;
+  gap: 4.5mm;
   min-width: 0;
   min-height: 0;
 }
 
-.rp-col-left { flex: 0 0 61%; }
+.rp-col-left { flex: 0 0 60%; }
 .rp-col-right { flex: 1; }
 
 .rp-summary {
   background: var(--surface);
   border: 1px solid var(--border);
-  border-left: 1mm solid var(--accent);
-  border-radius: 2mm;
-  padding: 3mm 4mm;
+  border-left: 1.2mm solid var(--accent);
+  border-radius: 2.5mm;
+  padding: 4mm 5mm;
   font-family: var(--font-display);
-  font-size: 3.5mm;
+  font-size: 4.4mm;
   font-weight: 500;
-  line-height: 1.4;
-  max-height: 15mm;
-  overflow: hidden;
+  line-height: 1.45;
   flex-shrink: 0;
 }
 
 .rp-kpi-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 2.2mm;
+  gap: 3mm;
   flex-shrink: 0;
 }
 
 .rp-kpi-card {
   background: var(--surface);
   border: 1px solid var(--border);
-  border-radius: 2mm;
-  padding: 2.3mm 2.8mm;
+  border-radius: 2.5mm;
+  padding: 3.4mm 4mm;
 }
 
 .rp-kpi-card .rp-kpi-label {
   font-family: var(--font-mono);
-  font-size: 2mm;
+  font-size: 2.5mm;
   text-transform: uppercase;
   letter-spacing: 0.03em;
   color: var(--text-tertiary);
   display: block;
-  margin-bottom: 1mm;
+  margin-bottom: 1.6mm;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -1360,7 +1358,7 @@ a { color: var(--accent-light); }
 
 .rp-kpi-card .rp-kpi-value {
   font-family: var(--font-display);
-  font-size: 3.9mm;
+  font-size: 5.4mm;
   font-weight: 700;
   display: block;
   letter-spacing: -0.01em;
@@ -1372,27 +1370,27 @@ a { color: var(--accent-light); }
 .rp-comparativos {
   display: flex;
   flex-direction: column;
-  gap: 1.4mm;
+  gap: 2mm;
   flex-shrink: 0;
 }
 
 .rp-comp-row {
   display: flex;
   align-items: center;
-  gap: 2.5mm;
+  gap: 3mm;
   background: var(--surface);
   border: 1px solid var(--border);
-  border-radius: 1.5mm;
-  padding: 1.8mm 3mm;
-  font-size: 2.7mm;
+  border-radius: 2mm;
+  padding: 2.6mm 4mm;
+  font-size: 3.4mm;
 }
 
-.rp-comp-row .rp-comp-label { flex: 0 0 32mm; font-weight: 700; }
+.rp-comp-row .rp-comp-label { flex: 0 0 38mm; font-weight: 700; }
 
 .rp-comp-row .rp-comp-vals {
   flex: 1;
   display: flex;
-  gap: 5mm;
+  gap: 6mm;
   font-family: var(--font-mono);
   color: var(--text-secondary);
 }
@@ -1405,13 +1403,13 @@ a { color: var(--accent-light); }
 .rp-comp-row .rp-comp-trend.stable { color: var(--neutral-stat); }
 
 .rp-movimentacao {
-  font-size: 2.6mm;
+  font-size: 3.4mm;
   color: var(--text-secondary);
-  line-height: 1.4;
+  line-height: 1.5;
   background: var(--surface);
   border: 1px solid var(--border);
-  border-radius: 2mm;
-  padding: 2.5mm 3mm;
+  border-radius: 2.5mm;
+  padding: 3.6mm 4.5mm;
   flex-shrink: 0;
 }
 .rp-movimentacao strong { color: var(--text-primary); }
@@ -1419,27 +1417,61 @@ a { color: var(--accent-light); }
 .rp-gauge {
   background: var(--surface);
   border: 1px solid var(--border);
-  border-radius: 2mm;
-  padding: 2.5mm 3mm;
+  border-radius: 2.5mm;
+  padding: 4mm 5mm;
   text-align: center;
   flex-shrink: 0;
 }
 
-.rp-gauge svg { width: 100%; max-width: 82mm; height: auto; }
+.rp-gauge-title {
+  display: block;
+  text-align: left;
+  font-family: var(--font-mono);
+  font-size: 2.6mm;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--accent-light);
+  margin-bottom: 2mm;
+}
+
+.rp-gauge svg { width: 100%; max-width: 100mm; height: auto; }
+
+.rp-gauge-stat {
+  text-align: center;
+  margin-top: 1mm;
+}
+
+.rp-gauge-stat .rp-gauge-stat-value {
+  font-family: var(--font-display);
+  font-size: 6mm;
+  font-weight: 700;
+  color: var(--accent-light);
+  display: block;
+  letter-spacing: -0.01em;
+}
+
+.rp-gauge-stat .rp-gauge-stat-label {
+  font-family: var(--font-mono);
+  font-size: 2.8mm;
+  color: var(--text-secondary);
+  display: block;
+  margin-top: 0.8mm;
+}
 
 .rp-tier-lines {
   display: flex;
   flex-direction: column;
-  gap: 1mm;
-  margin-top: 1.5mm;
+  gap: 1.4mm;
+  margin-top: 3mm;
   text-align: left;
 }
 
 .rp-tier-line {
   display: flex;
   align-items: baseline;
-  gap: 1.6mm;
-  font-size: 2.5mm;
+  gap: 2mm;
+  font-size: 3.1mm;
   color: var(--text-secondary);
 }
 
@@ -1447,11 +1479,11 @@ a { color: var(--accent-light); }
 
 .rp-tier-tag {
   font-family: var(--font-mono);
-  font-size: 2mm;
+  font-size: 2.5mm;
   font-weight: 700;
   text-transform: uppercase;
   flex-shrink: 0;
-  width: 11mm;
+  width: 13mm;
 }
 .rp-tier-tag.bronze { color: var(--tier-bronze); }
 .rp-tier-tag.prata { color: var(--tier-prata); }
@@ -1461,39 +1493,40 @@ a { color: var(--accent-light); }
   flex: 1;
   background: var(--surface);
   border: 1px solid var(--border);
-  border-radius: 2mm;
-  padding: 3mm;
+  border-radius: 2.5mm;
+  padding: 4mm 5mm;
   display: flex;
   flex-direction: column;
-  gap: 1.8mm;
+  gap: 2.6mm;
   min-height: 0;
   overflow: hidden;
 }
 
 .rp-diag-title {
   font-family: var(--font-mono);
-  font-size: 2mm;
+  font-size: 2.6mm;
+  font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.07em;
   color: var(--accent-light);
-  margin-bottom: 0.5mm;
+  margin-bottom: 0.8mm;
 }
 
 .rp-diag-item {
-  font-size: 2.5mm;
-  line-height: 1.4;
+  font-size: 3.2mm;
+  line-height: 1.45;
   color: var(--text-secondary);
   position: relative;
-  padding-left: 3.2mm;
+  padding-left: 4mm;
 }
 
 .rp-diag-item::before {
   content: "";
   position: absolute;
   left: 0;
-  top: 1.1mm;
-  width: 1.4mm;
-  height: 1.4mm;
+  top: 1.5mm;
+  width: 1.7mm;
+  height: 1.7mm;
   background: var(--accent);
   transform: rotate(45deg);
 }
@@ -3528,14 +3561,16 @@ function renderizarRelatorioImprimivel(relatorio) {
     `<strong>${vendidos}</strong> vendido(s) · <strong>${cancelados}</strong> cancelado(s) · saldo ` +
     `<strong>${saldo >= 0 ? "+" : ""}${saldo}</strong> assinatura(s) no período (movimentação dos CSVs importados).`;
 
-  // ---- Velocímetro compacto + escalas ----
+  // ---- Velocímetro compacto + título + estatística + escalas ----
   const { bronze, prata, ouro, brutoHoje, diasRestantes, progresso } = relatorio.metas;
   const gaugeEl = document.getElementById("rpGauge");
   const metasValidas = bronze !== null && prata !== null && ouro !== null;
 
   if (!metasValidas) {
-    gaugeEl.innerHTML = `<p style="font-size:2.6mm;color:var(--text-tertiary);">Metas não informadas.</p>`;
+    gaugeEl.innerHTML = `<span class="rp-gauge-title">Progresso do mês</span><p style="font-size:3.2mm;color:var(--text-tertiary);">Metas não informadas.</p>`;
   } else {
+    const percentualOuro = ouro > 0 ? (brutoHoje / ouro) * 100 : null;
+
     const linhas = ["bronze", "prata", "ouro"].map((escala) => {
       const dado = progresso.escalas[escala];
       if (!dado) return "";
@@ -3551,15 +3586,19 @@ function renderizarRelatorioImprimivel(relatorio) {
     }).join("");
 
     gaugeEl.innerHTML =
+      `<span class="rp-gauge-title">Progresso do mês</span>` +
       construirGaugeSVG({ bronze, prata, ouro, valor: brutoHoje }) +
+      `<div class="rp-gauge-stat">
+        <span class="rp-gauge-stat-value">R$ ${formatCentsToBRL(brutoHoje)}</span>
+        <span class="rp-gauge-stat-label">${percentualOuro !== null ? `${percentualOuro.toFixed(1)}% da meta Ouro atingida` : "Meta Ouro não informada"}</span>
+      </div>` +
       `<div class="rp-tier-lines">${linhas}</div>`;
   }
 
-  // ---- Diagnósticos (top 4, para caber com folga) ----
-  const topDiagnosticos = relatorio.diagnosticos.slice(0, 4);
+  // ---- Diagnósticos (lista completa — há espaço de sobra na página) ----
   document.getElementById("rpDiagnosticos").innerHTML =
     `<span class="rp-diag-title">Diagnóstico</span>` +
-    topDiagnosticos.map((texto) => `<div class="rp-diag-item">${texto}</div>`).join("");
+    relatorio.diagnosticos.map((texto) => `<div class="rp-diag-item">${texto}</div>`).join("");
 }
 
 

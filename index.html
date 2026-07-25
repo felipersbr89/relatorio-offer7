@@ -3460,20 +3460,23 @@ function renderizarGauge(relatorio) {
 
   const percentualOuro = ouro > 0 ? (brutoHoje / ouro) * 100 : null;
 
+  const metasCents = { bronze, prata, ouro };
+
   const linhasEscala = ["bronze", "prata", "ouro"].map((escala) => {
     const dado = progresso.escalas[escala];
     if (!dado) return "";
 
     const percentualTexto = dado.percentual !== null ? `${dado.percentual.toFixed(1)}%` : "—";
+    const valorMeta = `Meta <strong>R$ ${formatCentsToBRL(metasCents[escala])}</strong>`;
     let texto;
 
     if (dado.atingida) {
-      texto = `<span class="achieved">✓ Meta atingida</span> — ${percentualTexto} do valor definido.`;
+      texto = `${valorMeta} — <span class="achieved">✓ atingida</span> (${percentualTexto} do valor definido).`;
     } else if (diasRestantes === 0) {
-      texto = `Faltam <strong>R$ ${formatCentsToBRL(dado.faltaCents)}</strong> (${percentualTexto}) — hoje é o último dia do mês.`;
+      texto = `${valorMeta} — faltam <strong>R$ ${formatCentsToBRL(dado.faltaCents)}</strong> (${percentualTexto}) — hoje é o último dia do mês.`;
     } else {
       texto =
-        `Faltam <strong>R$ ${formatCentsToBRL(dado.faltaCents)}</strong> (${percentualTexto}) · ` +
+        `${valorMeta} — faltam <strong>R$ ${formatCentsToBRL(dado.faltaCents)}</strong> (${percentualTexto}) · ` +
         `<strong>R$ ${formatCentsToBRL(dado.faltaPorDiaCents)}</strong>/dia nos próximos ${diasRestantes} dia(s).`;
     }
 
@@ -3571,16 +3574,19 @@ function renderizarRelatorioImprimivel(relatorio) {
   } else {
     const percentualOuro = ouro > 0 ? (brutoHoje / ouro) * 100 : null;
 
+    const metasCentsCompact = { bronze, prata, ouro };
+
     const linhas = ["bronze", "prata", "ouro"].map((escala) => {
       const dado = progresso.escalas[escala];
       if (!dado) return "";
+      const valorMeta = `meta <b>R$ ${formatCentsToBRL(metasCentsCompact[escala])}</b>`;
       let texto;
       if (dado.atingida) {
-        texto = `<b>atingida</b> (${dado.percentual.toFixed(0)}%)`;
+        texto = `${valorMeta} — <b>atingida</b> (${dado.percentual.toFixed(0)}%)`;
       } else if (diasRestantes === 0) {
-        texto = `falta <b>R$ ${formatCentsToBRL(dado.faltaCents)}</b>`;
+        texto = `${valorMeta} — falta <b>R$ ${formatCentsToBRL(dado.faltaCents)}</b>`;
       } else {
-        texto = `falta <b>R$ ${formatCentsToBRL(dado.faltaCents)}</b> · <b>R$ ${formatCentsToBRL(dado.faltaPorDiaCents)}</b>/dia`;
+        texto = `${valorMeta} — falta <b>R$ ${formatCentsToBRL(dado.faltaCents)}</b> · <b>R$ ${formatCentsToBRL(dado.faltaPorDiaCents)}</b>/dia`;
       }
       return `<div class="rp-tier-line"><span class="rp-tier-tag ${escala}">${ROTULOS_ESCALA[escala]}</span> ${texto}</div>`;
     }).join("");
@@ -3986,15 +3992,18 @@ function atualizarProgressoMetas() {
     linhas[escala].hidden = false;
     const percentualTexto = dado.percentual !== null ? `${dado.percentual.toFixed(1)}%` : "—";
 
+    const metasCentsPreview = { bronze, prata, ouro };
+    const valorMeta = `Meta <strong>R$ ${formatCentsToBRL(metasCentsPreview[escala])}</strong>`;
+
     if (dado.atingida) {
       textos[escala].innerHTML =
-        `<span class="achieved">✓ Meta ${ROTULOS_ESCALA[escala]} atingida</span> — ${percentualTexto} do valor definido.`;
+        `${valorMeta} — <span class="achieved">✓ atingida</span> (${percentualTexto} do valor definido).`;
     } else if (diasRestantes === 0) {
       textos[escala].innerHTML =
-        `Faltam <strong>R$ ${formatCentsToBRL(dado.faltaCents)}</strong> (${percentualTexto}) — hoje é o último dia do mês.`;
+        `${valorMeta} — faltam <strong>R$ ${formatCentsToBRL(dado.faltaCents)}</strong> (${percentualTexto}) — hoje é o último dia do mês.`;
     } else {
       textos[escala].innerHTML =
-        `Faltam <strong>R$ ${formatCentsToBRL(dado.faltaCents)}</strong> (${percentualTexto}) · ` +
+        `${valorMeta} — faltam <strong>R$ ${formatCentsToBRL(dado.faltaCents)}</strong> (${percentualTexto}) · ` +
         `<strong>R$ ${formatCentsToBRL(dado.faltaPorDiaCents)}</strong>/dia nos próximos ${diasRestantes} dia(s).`;
     }
   }

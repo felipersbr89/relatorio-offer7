@@ -1917,26 +1917,6 @@ License: MIT
   </div>
 </div>
 
-<!-- ===================== MODAL DE SELEÇÃO MANUAL DA COLUNA DE NOME ===================== -->
-<div class="modal-overlay" id="columnPickerModal" hidden onclick="if(event.target===this){this.hidden=true;}">
-  <div class="modal modal-wide" role="alertdialog" aria-modal="true" aria-labelledby="columnPickerTitle">
-    <button type="button" class="modal-close-x" id="btnCloseColumnX" aria-label="Fechar" onclick="document.getElementById('columnPickerModal').hidden = true;">&times;</button>
-    <h2 id="columnPickerTitle">Qual coluna contém os nomes?</h2>
-    <p>
-      Não conseguimos identificar automaticamente a coluna de nomes neste arquivo.
-      Selecione abaixo qual coluna representa o nome do cliente/assinante.
-      Nenhum nome será exibido — apenas os títulos das colunas.
-    </p>
-
-    <div class="column-picker-list" id="columnPickerList"></div>
-
-    <div class="modal-actions">
-      <button type="button" class="btn btn-ghost" id="btnCancelColumn" onclick="document.getElementById('columnPickerModal').hidden = true;">Cancelar</button>
-      <button type="button" class="btn btn-primary" id="btnConfirmColumn" disabled>Confirmar coluna</button>
-    </div>
-  </div>
-</div>
-
 <!-- ===================== REGIÃO DE MENSAGENS (TOASTS) ===================== -->
 <div class="toast-region" id="toastRegion" aria-live="polite"></div>
 
@@ -2171,95 +2151,48 @@ License: MIT
 
     </form>
 
-    <!-- ===================== IMPORTAÇÃO DE ARQUIVOS (estrutura visual — Etapa 3) ===================== -->
+    <!-- ===================== MOVIMENTAÇÃO DE PLANOS (inserção numérica manual) ===================== -->
     <div class="section-heading section-heading-spaced">
       <span class="eyebrow">Movimentação de planos</span>
-      <h2>Importe os arquivos CSV</h2>
+      <h2>Informe as quantidades de hoje</h2>
     </div>
 
-    <div class="upload-grid">
+    <div class="cards-grid">
 
-      <!-- Upload — Planos vendidos -->
-      <div class="card upload-card" data-upload="vendidos">
-        <div class="upload-card-head">
+      <!-- Planos vendidos -->
+      <fieldset class="card input-card" data-block="planosVendidos">
+        <legend>
           <span class="card-icon" data-lucide="file-up" aria-hidden="true"></span>
-          <h3>Planos vendidos</h3>
-        </div>
+          Planos vendidos
+        </legend>
+        <p class="card-hint">Quantidade de planos vendidos hoje.</p>
 
-        <input type="file" id="csvInputVendidos" accept=".csv,text/csv" hidden>
-
-        <div class="dropzone" id="dropzoneVendidos" tabindex="0" role="button"
-             aria-label="Importar CSV de planos vendidos">
-          <p class="dropzone-text">Arraste o arquivo CSV aqui ou <span class="dropzone-link">selecione um arquivo</span></p>
-          <p class="dropzone-hint">Arquivo .csv com uma coluna de nomes (ex.: Nome, Cliente, Assinante)</p>
-        </div>
-
-        <div class="upload-loaded" id="loadedVendidos" hidden>
-          <div class="upload-file-row">
-            <span class="card-icon card-icon-sm" data-lucide="file-text" aria-hidden="true"></span>
-            <div class="upload-file-meta">
-              <span class="upload-file-name" id="fileNameVendidos"></span>
-              <span class="upload-file-size" id="fileSizeVendidos"></span>
-            </div>
-            <span class="upload-status-badge" id="statusBadgeVendidos"></span>
-          </div>
-
-          <dl class="upload-stats" id="statsVendidos">
-            <div class="stat"><dt>Linhas lidas</dt><dd id="statTotalVendidos">—</dd></div>
-            <div class="stat"><dt>Duplicados removidos</dt><dd id="statDupVendidos">—</dd></div>
-            <div class="stat"><dt>Registros inválidos</dt><dd id="statInvVendidos">—</dd></div>
-            <div class="stat stat-highlight"><dt>Planos vendidos (únicos)</dt><dd id="statFinalVendidos">—</dd></div>
-          </dl>
-
-          <div class="upload-actions">
-            <button type="button" class="btn btn-ghost btn-sm" id="btnReplaceVendidos">Substituir arquivo</button>
-            <button type="button" class="btn btn-ghost btn-danger btn-sm" id="btnRemoveVendidos">Remover arquivo</button>
+        <div class="input-row input-row-single">
+          <div class="field">
+            <label for="planosVendidosQtd">Planos vendidos hoje</label>
+            <input type="text" inputmode="numeric" id="planosVendidosQtd" name="planosVendidosQtd" placeholder="Ex.: 10" autocomplete="off">
+            <span class="field-error" id="err-planosVendidosQtd" role="alert"></span>
           </div>
         </div>
+      </fieldset>
 
-        <p class="upload-error" id="errorVendidos" role="alert"></p>
-      </div>
-
-      <!-- Upload — Planos cancelados -->
-      <div class="card upload-card" data-upload="cancelados">
-        <div class="upload-card-head">
+      <!-- Planos cancelados -->
+      <fieldset class="card input-card" data-block="planosCancelados">
+        <legend>
           <span class="card-icon" data-lucide="file-x" aria-hidden="true"></span>
-          <h3>Planos cancelados</h3>
-        </div>
+          Planos cancelados
+        </legend>
+        <p class="card-hint">Quantidade de planos cancelados hoje.</p>
 
-        <input type="file" id="csvInputCancelados" accept=".csv,text/csv" hidden>
-
-        <div class="dropzone" id="dropzoneCancelados" tabindex="0" role="button"
-             aria-label="Importar CSV de planos cancelados">
-          <p class="dropzone-text">Arraste o arquivo CSV aqui ou <span class="dropzone-link">selecione um arquivo</span></p>
-          <p class="dropzone-hint">Arquivo .csv com uma coluna de nomes (ex.: Nome, Cliente, Assinante)</p>
-        </div>
-
-        <div class="upload-loaded" id="loadedCancelados" hidden>
-          <div class="upload-file-row">
-            <span class="card-icon card-icon-sm" data-lucide="file-text" aria-hidden="true"></span>
-            <div class="upload-file-meta">
-              <span class="upload-file-name" id="fileNameCancelados"></span>
-              <span class="upload-file-size" id="fileSizeCancelados"></span>
-            </div>
-            <span class="upload-status-badge" id="statusBadgeCancelados"></span>
-          </div>
-
-          <dl class="upload-stats" id="statsCancelados">
-            <div class="stat"><dt>Linhas lidas</dt><dd id="statTotalCancelados">—</dd></div>
-            <div class="stat"><dt>Duplicados removidos</dt><dd id="statDupCancelados">—</dd></div>
-            <div class="stat"><dt>Registros inválidos</dt><dd id="statInvCancelados">—</dd></div>
-            <div class="stat stat-highlight"><dt>Planos cancelados (únicos)</dt><dd id="statFinalCancelados">—</dd></div>
-          </dl>
-
-          <div class="upload-actions">
-            <button type="button" class="btn btn-ghost btn-sm" id="btnReplaceCancelados">Substituir arquivo</button>
-            <button type="button" class="btn btn-ghost btn-danger btn-sm" id="btnRemoveCancelados">Remover arquivo</button>
+        <div class="input-row input-row-single">
+          <div class="field">
+            <label for="planosCanceladosQtd">Planos cancelados hoje</label>
+            <input type="text" inputmode="numeric" id="planosCanceladosQtd" name="planosCanceladosQtd" placeholder="Ex.: 2" autocomplete="off">
+            <span class="field-error" id="err-planosCanceladosQtd" role="alert"></span>
           </div>
         </div>
+      </fieldset>
 
-        <p class="upload-error" id="errorCancelados" role="alert"></p>
-      </div>
     </div>
 
   </section>
@@ -2741,6 +2674,8 @@ const CAMPOS_MANUAIS = [
   { id: "avulsoHoje", tipo: "moeda" },
   { id: "avulsoAnterior", tipo: "moeda" },
   { id: "assinantesAtivos", tipo: "inteiro" },
+  { id: "planosVendidosQtd", tipo: "inteiro" },
+  { id: "planosCanceladosQtd", tipo: "inteiro" },
   { id: "metaBronze", tipo: "moeda" },
   { id: "metaPrata", tipo: "moeda" },
   { id: "metaOuro", tipo: "moeda" }
@@ -3350,8 +3285,8 @@ function gerarRelatorio(appState) {
   const assinantesAtivos = lerInt("assinantesAtivos");
 
   const planos = {
-    vendidos: appState.csv.vendidos.quantidadeFinal,
-    cancelados: appState.csv.cancelados.quantidadeFinal
+    vendidos: lerInt("planosVendidosQtd") ?? 0,
+    cancelados: lerInt("planosCanceladosQtd") ?? 0
   };
   planos.saldo = saldoPlanos(planos.vendidos, planos.cancelados);
 
@@ -3813,19 +3748,6 @@ function renderizarRelatorioImprimivel(relatorio) {
 /* Estado central                                                       */
 /* ------------------------------------------------------------------ */
 
-function estadoCsvVazio() {
-  return {
-    nomeArquivo: null,
-    tamanho: null,
-    colunaNome: null,
-    status: "vazio", // vazio | processando | ok | erro
-    totalLinhas: 0,
-    duplicadosRemovidos: 0,
-    registrosInvalidos: 0,
-    quantidadeFinal: 0
-  };
-}
-
 const appState = {
   meta: {
     dataRelatorio: hojeISO(),
@@ -3837,18 +3759,11 @@ const appState = {
     clubeHoje: "", clubeAnterior: "",
     avulsoHoje: "", avulsoAnterior: "",
     assinantesAtivos: "",
+    planosVendidosQtd: "", planosCanceladosQtd: "",
     metaBronze: "", metaPrata: "", metaOuro: ""
-  },
-  csv: {
-    vendidos: estadoCsvVazio(),
-    cancelados: estadoCsvVazio()
   }
 };
 
-// Guarda temporariamente as linhas lidas de um arquivo enquanto o usuário
-// escolhe manualmente a coluna de nome. Nunca é persistido em localStorage
-// e é descartado assim que o processamento é concluído.
-let selecaoColunaPendente = null; // { tipo, headers, rows, file }
 let ultimoRelatorio = null; // último objeto de relatório gerado, usado por "Copiar resumo" e "Atualizar"
 
 // Pares de campos que geram prévia de comparativo em tempo real
@@ -3891,9 +3806,6 @@ document.addEventListener("DOMContentLoaded", () => {
   etapaSegura("validação ao vivo", inicializarValidacaoAoVivo);
   etapaSegura("prévias", atualizarTodasAsPrevias);
   etapaSegura("cálculos avançados", atualizarCalculosAvancados);
-  etapaSegura("upload vendidos", () => inicializarUpload("vendidos"));
-  etapaSegura("upload cancelados", () => inicializarUpload("cancelados"));
-  etapaSegura("seletor de coluna", inicializarColumnPicker);
   etapaSegura("botão gerar", avaliarBotaoGerar);
   etapaSegura("limpar relatório", inicializarLimparRelatorio);
   etapaSegura("relatório", inicializarRelatorio);
@@ -4003,18 +3915,8 @@ function restaurarEstadoSalvo() {
     }
   }
 
-  if (salvo.csv?.vendidos?.status === "ok") {
-    Object.assign(appState.csv.vendidos, salvo.csv.vendidos);
-    renderizarUploadCarregado("vendidos", { reprocessamentoPendente: true });
-  }
-  if (salvo.csv?.cancelados?.status === "ok") {
-    Object.assign(appState.csv.cancelados, salvo.csv.cancelados);
-    renderizarUploadCarregado("cancelados", { reprocessamentoPendente: true });
-  }
-
   const houveDadosManuais = salvo.manual && Object.values(salvo.manual).some((v) => v !== "");
-  const houveCsv = salvo.csv?.vendidos?.status === "ok" || salvo.csv?.cancelados?.status === "ok";
-  if (houveDadosManuais || houveCsv) {
+  if (houveDadosManuais) {
     definirStatus("salvo");
     mostrarToast("Dados anteriores restaurados desta sessão.", "success");
   }
@@ -4293,10 +4195,8 @@ function avaliarBotaoGerar() {
   const ordemMetasValida = validarOrdemMetas(bronze, prata, ouro).valid;
   if (!ordemMetasValida) todosValidos = false;
 
-  const vendidosOk = appState.csv.vendidos.status === "ok";
-  const canceladosOk = appState.csv.cancelados.status === "ok";
   const manualCompleto = algumPreenchido && todosValidos;
-  const tudoPronto = manualCompleto && vendidosOk && canceladosOk;
+  const tudoPronto = manualCompleto;
 
   btn.disabled = !tudoPronto;
 
@@ -4304,261 +4204,9 @@ function avaliarBotaoGerar() {
     info.textContent = "Preencha todos os campos para gerar o relatório.";
   } else if (!todosValidos) {
     info.textContent = "Existem campos com valores inválidos. Corrija-os para continuar.";
-  } else if (!vendidosOk || !canceladosOk) {
-    info.textContent = "Indicadores manuais completos. Importe os dois arquivos CSV para continuar.";
   } else {
     info.textContent = "Tudo pronto! Clique para gerar o relatório diário.";
   }
-}
-
-/* ------------------------------------------------------------------ */
-/* Upload e processamento dos arquivos CSV                             */
-/* ------------------------------------------------------------------ */
-
-const ROTULOS_UPLOAD = {
-  vendidos: "Planos vendidos",
-  cancelados: "Planos cancelados"
-};
-
-function inicializarUpload(tipo) {
-  const capitalizado = tipo.charAt(0).toUpperCase() + tipo.slice(1);
-  const input = document.getElementById(`csvInput${capitalizado}`);
-  const dropzone = document.getElementById(`dropzone${capitalizado}`);
-  const btnReplace = document.getElementById(`btnReplace${capitalizado}`);
-  const btnRemove = document.getElementById(`btnRemove${capitalizado}`);
-
-  const abrirSeletor = () => input.click();
-
-  dropzone.addEventListener("click", abrirSeletor);
-  dropzone.addEventListener("keydown", (e) => {
-    if (e.key === "Enter" || e.key === " ") {
-      e.preventDefault();
-      abrirSeletor();
-    }
-  });
-
-  dropzone.addEventListener("dragover", (e) => {
-    e.preventDefault();
-    dropzone.classList.add("is-dragover");
-  });
-  dropzone.addEventListener("dragleave", () => dropzone.classList.remove("is-dragover"));
-  dropzone.addEventListener("drop", (e) => {
-    e.preventDefault();
-    dropzone.classList.remove("is-dragover");
-    const file = e.dataTransfer?.files?.[0];
-    if (file) processarArquivoSelecionado(tipo, file);
-  });
-
-  input.addEventListener("change", () => {
-    const file = input.files?.[0];
-    if (file) processarArquivoSelecionado(tipo, file);
-    input.value = ""; // permite selecionar o mesmo arquivo novamente, se necessário
-  });
-
-  btnReplace.addEventListener("click", abrirSeletor);
-  btnRemove.addEventListener("click", () => resetarUpload(tipo));
-}
-
-async function processarArquivoSelecionado(tipo, file) {
-  const capitalizado = tipo.charAt(0).toUpperCase() + tipo.slice(1);
-  const erroEl = document.getElementById(`error${capitalizado}`);
-  erroEl.textContent = "";
-
-  definirStatusBadge(tipo, "processing", "Processando…");
-
-  try {
-    const { headers, rows } = await lerArquivoCSV(file);
-    const colunaDetectada = detectarColunaNome(headers);
-
-    if (colunaDetectada) {
-      finalizarProcessamento(tipo, file, rows, colunaDetectada);
-    } else {
-      selecaoColunaPendente = { tipo, file, rows, headers };
-      abrirColumnPicker(tipo, headers);
-    }
-  } catch (err) {
-    mostrarErroUpload(tipo, err.message || "Não foi possível processar o arquivo.");
-  }
-}
-
-function finalizarProcessamento(tipo, file, rows, colunaNome) {
-  try {
-    const resultado = processarLinhas(rows, colunaNome);
-
-    appState.csv[tipo] = {
-      nomeArquivo: file.name,
-      tamanho: file.size,
-      colunaNome,
-      status: "ok",
-      ...resultado
-    };
-
-    renderizarUploadCarregado(tipo);
-    definirStatus("rascunho");
-    salvarComDebounce();
-    avaliarBotaoGerar();
-    mostrarToast(`${ROTULOS_UPLOAD[tipo]}: arquivo processado com sucesso.`, "success");
-  } catch (err) {
-    mostrarErroUpload(tipo, "Falha ao calcular os registros do arquivo.");
-  }
-}
-
-function mostrarErroUpload(tipo, mensagem) {
-  const capitalizado = tipo.charAt(0).toUpperCase() + tipo.slice(1);
-
-  // Nunca deixa um elemento ausente travar o fluxo (ex.: impedir o
-  // fechamento do modal de seleção de coluna) — cada acesso é opcional.
-  const erroEl = document.getElementById(`error${capitalizado}`);
-  if (erroEl) erroEl.textContent = mensagem;
-
-  appState.csv[tipo] = estadoCsvVazio();
-  appState.csv[tipo].status = "erro";
-
-  const loadedEl = document.getElementById(`loaded${capitalizado}`);
-  if (loadedEl) loadedEl.hidden = true;
-
-  const dropzoneEl = document.getElementById(`dropzone${capitalizado}`);
-  if (dropzoneEl) dropzoneEl.hidden = false;
-
-  avaliarBotaoGerar();
-}
-
-function definirStatusBadge(tipo, estado, texto) {
-  const capitalizado = tipo.charAt(0).toUpperCase() + tipo.slice(1);
-  const badge = document.getElementById(`statusBadge${capitalizado}`);
-  if (!badge) return;
-  badge.className = `upload-status-badge ${estado}`;
-  badge.textContent = texto;
-}
-
-function renderizarUploadCarregado(tipo, { reprocessamentoPendente = false } = {}) {
-  const capitalizado = tipo.charAt(0).toUpperCase() + tipo.slice(1);
-  const estado = appState.csv[tipo];
-
-  document.getElementById(`dropzone${capitalizado}`).hidden = true;
-  document.getElementById(`loaded${capitalizado}`).hidden = false;
-  document.getElementById(`error${capitalizado}`).textContent = "";
-
-  document.getElementById(`fileName${capitalizado}`).textContent = estado.nomeArquivo || "Arquivo processado anteriormente";
-  document.getElementById(`fileSize${capitalizado}`).textContent =
-    estado.tamanho != null ? formatFileSize(estado.tamanho) : "";
-
-  document.getElementById(`statTotal${capitalizado}`).textContent = estado.totalLinhas;
-  document.getElementById(`statDup${capitalizado}`).textContent = estado.duplicadosRemovidos;
-  document.getElementById(`statInv${capitalizado}`).textContent = estado.registrosInvalidos;
-  document.getElementById(`statFinal${capitalizado}`).textContent = estado.quantidadeFinal;
-
-  definirStatusBadge(
-    tipo,
-    "ok",
-    reprocessamentoPendente ? "Restaurado desta sessão" : "Processado"
-  );
-
-  inicializarIcones();
-}
-
-function resetarUpload(tipo) {
-  const capitalizado = tipo.charAt(0).toUpperCase() + tipo.slice(1);
-
-  appState.csv[tipo] = estadoCsvVazio();
-
-  document.getElementById(`loaded${capitalizado}`).hidden = true;
-  document.getElementById(`dropzone${capitalizado}`).hidden = false;
-  document.getElementById(`error${capitalizado}`).textContent = "";
-
-  definirStatus("rascunho");
-  salvarComDebounce();
-  avaliarBotaoGerar();
-}
-
-/* ------------------------------------------------------------------ */
-/* Modal de seleção manual da coluna de nome                           */
-/* ------------------------------------------------------------------ */
-
-function inicializarColumnPicker() {
-  const overlay = document.getElementById("columnPickerModal");
-  const btnCancel = document.getElementById("btnCancelColumn");
-  const btnConfirm = document.getElementById("btnConfirmColumn");
-  const btnCloseX = document.getElementById("btnCloseColumnX");
-
-  const fechar = () => {
-    overlay.hidden = true;
-    selecaoColunaPendente = null;
-  };
-
-  // fechar() SEMPRE roda, mesmo se marcar o erro do upload falhar por
-  // algum motivo inesperado — o usuário nunca deve ficar preso no modal.
-  const cancelarSelecao = () => {
-    try {
-      if (selecaoColunaPendente) {
-        mostrarErroUpload(
-          selecaoColunaPendente.tipo,
-          "Nenhuma coluna foi selecionada. Importe o arquivo novamente para tentar de novo."
-        );
-      }
-    } catch (err) {
-      console.error("Falha ao cancelar seleção de coluna:", err);
-    } finally {
-      fechar();
-    }
-  };
-
-  btnCancel.addEventListener("click", cancelarSelecao);
-  if (btnCloseX) btnCloseX.addEventListener("click", cancelarSelecao);
-
-  overlay.addEventListener("click", (e) => {
-    if (e.target === overlay) cancelarSelecao();
-  });
-
-  document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape" && overlay.hidden === false) cancelarSelecao();
-  });
-
-  btnConfirm.addEventListener("click", () => {
-    if (!selecaoColunaPendente) return;
-    const escolhida = overlay.querySelector('input[name="colunaEscolhida"]:checked');
-    if (!escolhida) return;
-
-    try {
-      const { tipo, file, rows } = selecaoColunaPendente;
-      finalizarProcessamento(tipo, file, rows, escolhida.value);
-    } catch (err) {
-      console.error("Falha ao confirmar coluna selecionada:", err);
-      mostrarToast("Não foi possível processar a coluna selecionada. Tente novamente.", "error");
-    } finally {
-      fechar();
-    }
-  });
-}
-
-function abrirColumnPicker(tipo, headers) {
-  const overlay = document.getElementById("columnPickerModal");
-  const lista = document.getElementById("columnPickerList");
-  const btnConfirm = document.getElementById("btnConfirmColumn");
-
-  lista.innerHTML = "";
-  btnConfirm.disabled = true;
-
-  headers.forEach((header, index) => {
-    const label = document.createElement("label");
-    label.className = "column-option";
-
-    const radio = document.createElement("input");
-    radio.type = "radio";
-    radio.name = "colunaEscolhida";
-    radio.value = header;
-    radio.id = `col-opt-${index}`;
-    radio.addEventListener("change", () => { btnConfirm.disabled = false; });
-
-    const span = document.createElement("span");
-    span.textContent = header; // apenas o TÍTULO da coluna — nunca dados de linhas
-
-    label.appendChild(radio);
-    label.appendChild(span);
-    lista.appendChild(label);
-  });
-
-  overlay.hidden = false;
 }
 
 /* ------------------------------------------------------------------ */
@@ -4596,9 +4244,6 @@ function inicializarLimparRelatorio() {
       appState.meta.dataRelatorio = hojeISO();
       document.getElementById("reportDate").value = appState.meta.dataRelatorio;
       atualizarDicaComparativa();
-
-      resetarUpload("vendidos");
-      resetarUpload("cancelados");
 
       atualizarTodasAsPrevias();
       atualizarCalculosAvancados();
